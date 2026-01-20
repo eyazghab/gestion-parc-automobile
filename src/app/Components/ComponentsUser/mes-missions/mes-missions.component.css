@@ -1,0 +1,33 @@
+/* Image de fond */
+.masthead-missions {
+  height: 100vh;
+  background: url('assets/images/voitures.jpg') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}
+
+/* Filtre sombre pour rendre le texte lisible */
+.masthead-missions::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+/* Pour que le contenu passe au-dessus du filtre */
+.masthead-missions .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Titre */
+.masthead-missions h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+/* Tableau */
+.card {
+  max-width: 1000px;
+  margin: 0 auto;
+}

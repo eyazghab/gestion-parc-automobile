@@ -1,0 +1,218 @@
+/* --- Conteneur principal --- */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* --- Titres --- */
+h2 {
+  font-weight: 700;
+  border-bottom: 2px solid #0d6efd;
+  padding-bottom: 5px;
+}
+
+/* --- Champ de recherche --- */
+input.form-control {
+  max-width: 300px;
+  border-radius: 0.375rem;
+  border: 1px solid #ced4da;
+}
+
+/* --- Alertes véhicules --- */
+.alertes-container h3 {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+}
+
+.alertes-container .alert {
+  border-left: 5px solid #ffc107;
+  background-color: #fff3cd;
+  color: #856404;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.alertes-container .alert:hover {
+  transform: translateY(-2px);
+}
+
+/* --- Badges --- */
+.badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Couleurs pour alertes résolues / non résolues */
+.table-success {
+  background-color: #d1e7dd !important;
+}
+
+.table-warning {
+  background-color: #fff3cd !important;
+}
+
+/* --- Tableaux --- */
+table.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+table th, table td {
+  vertical-align: middle !important;
+}
+
+table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  text-align: left;
+}
+
+table tbody tr {
+  transition: background-color 0.2s;
+}
+
+table tbody tr:hover {
+  background-color: #f1f3f5;
+}
+
+/* Ligne détaillée */
+.table-info {
+  background-color: #e7f1ff !important;
+  font-size: 0.95rem;
+}
+
+/* --- Boutons --- */
+button.btn {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+}
+
+button.btn-outline-primary {
+  transition: all 0.2s;
+}
+
+button.btn-outline-primary:hover {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+/* --- Responsiveness --- */
+@media (max-width: 768px) {
+  .alertes-container .alert {
+    font-size: 0.9rem;
+  }
+
+  input.form-control {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  table.table {
+    font-size: 0.85rem;
+  }
+}
+/* Conteneur général du calendrier */
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* En-tête du calendrier */
+.card-header {
+  background-color: #00bcd4 !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+/* Cases de jour */
+.card .row .col {
+  padding: 2px;
+}
+
+/* Jour normal */
+.card .row .col .card {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+  background-color: #f8f9fa; /* gris clair */
+}
+
+/* Effet au survol */
+.card .row .col .card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Jour avec alerte */
+.bg-danger {
+  background-color: #f44336 !important; /* rouge vif */
+  border: none;
+  color: white !important;
+  font-weight: bold;
+}
+
+/* Jour vide (autres mois) */
+.invisible {
+  visibility: hidden;
+}
+
+/* Texte du jour */
+.card .card-body h6 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Texte "⚠ Alerte" */
+.card .card-body p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #fff;
+}
+
+/* Espacement général */
+.row.g-2 {
+  margin-bottom: 0.3rem;
+}
+.card-body .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-body .card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+/* Tableau des alertes */
+.table-hover tbody tr:hover {
+  background-color: #fff3cd !important; /* couleur légère pour survol */
+  cursor: pointer;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+.table td ul li {
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.card-header button {
+  font-size: 0.85rem;
+}
+
+.table-success {
+  background-color: #d4edda !important;
+}
+
+.table-warning {
+  background-color: #fff3cd !important;
+}
+
+.table td span.fs-5 {
+  font-size: 1.2rem; /* coche verte plus visible */
+}

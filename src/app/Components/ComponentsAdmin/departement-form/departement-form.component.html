@@ -1,0 +1,26 @@
+<!-- <div class="container mt-4">
+  <h3 class="mb-3 text-success">{{ isEditMode ? 'Modifier' : 'Ajouter' }} un département</h3>
+
+  <form (ngSubmit)="onSubmit()" #form="ngForm">
+    <div class="mb-3">
+      <label class="form-label">Nom du département</label>
+      <input type="text" class="form-control" [(ngModel)]="departement.nom" name="nom" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Responsable</label>
+      <input type="text" class="form-control" [(ngModel)]="departement.responsable" name="responsable" required />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Entreprise</label>
+      <select class="form-select" [(ngModel)]="departement.entreprise.id" name="entrepriseId" required>
+        <option *ngFor="let e of entreprises" [value]="e.id">{{ e.nom }}</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-success me-2">{{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}</button>
+    <button type="button" class="btn btn-secondary" (click)="annuler()">Annuler</button>
+  </form>
+</div>
+ -->

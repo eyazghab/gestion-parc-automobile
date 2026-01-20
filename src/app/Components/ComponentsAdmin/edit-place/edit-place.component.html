@@ -1,0 +1,51 @@
+<div class="container">
+  <h2>Modifier une place</h2>
+
+  <form [formGroup]="placeForm" (ngSubmit)="onSubmit()">
+    <table>
+      <tbody>
+        <tr>
+          <td><label for="nom">Nom :</label></td>
+          <td><input type="text" id="nom" formControlName="nom" required /></td>
+        </tr>
+
+        <tr>
+          <td><label for="numeroPlace">Numéro de place :</label></td>
+          <td><input type="number" id="numeroPlace" formControlName="numeroPlace" required /></td>
+        </tr>
+
+        <tr>
+          <td><label for="estOccupee">Occupée :</label></td>
+          <td><input type="checkbox" id="estOccupee" formControlName="estOccupee" /></td>
+        </tr>
+
+        <tr>
+          <td><label for="parking">Parking :</label></td>
+          <td>
+            <select id="parking" formControlName="parking" required>
+              <option *ngFor="let p of parkings" [ngValue]="p">{{ p.nomParking }}</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td><label for="vehicule">Véhicule :</label></td>
+          <td>
+            <select id="vehicule" formControlName="vehicule">
+              <option [ngValue]="null">Aucun</option>
+              <option *ngFor="let v of vehicules" [ngValue]="v">{{ v.immatriculation }}</option>
+            </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <button type="submit" style="padding: 10px 20px; background-color: #2c3e50; color: white; border: none; border-radius: 6px; cursor: pointer;">
+              Enregistrer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</div>

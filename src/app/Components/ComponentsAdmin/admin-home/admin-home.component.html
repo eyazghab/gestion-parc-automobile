@@ -1,0 +1,21 @@
+ <header class="masthead">
+    <div class="container px-4 px-lg-5 h-100">
+        <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+            <div class="col-lg-8 align-self-end">
+                <h1 class="text-white font-weight-bold">    <h2>Bienvenue dans l'Espace Administrateur</h2>
+</h1>
+    
+            </div>
+<div class="admin-container">
+    
+    <div class="grid">
+      <div class="card" *ngFor="let f of features" [routerLink]="f.route">
+        <div class="icon">{{ f.icon }}</div>
+        <h3>{{ f.title }}</h3>
+        <p>{{ f.desc }}</p>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+</header>  

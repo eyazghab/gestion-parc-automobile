@@ -1,0 +1,63 @@
+<header class="masthead d-flex align-items-center">
+  <div class="container px-4 px-lg-5">
+    <div class="row justify-content-center text-center w-100">
+      <div class="col-lg-10">
+        
+        <!-- Titre -->
+        <h1 class="text-white font-weight-bold mb-2">Mes Bons de Carburant</h1>
+<p class="text-white mb-4">
+  Consultez vos demandes et téléchargez vos PDF pour les bons acceptés.
+</p>        
+        <!-- Tableau -->
+        <div class="p-4 shadow rounded bg-light">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-dark text-center">
+                <tr>
+                  <th>Date</th>
+                  <th>Quantité</th>
+                  <th>Montant</th>
+                  <th>Véhicule</th>
+                  <th>Carburant</th>
+                  <th>État</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody class="text-center">
+                <tr *ngFor="let b of bons" class="align-middle">
+                  <td>{{ b.dateAchat | date:'dd/MM/yyyy' }}</td>
+                  <td>{{ b.quantite }} L</td>
+                  <td>{{ b.montant }} DT</td>
+                  <td>{{ b.vehicule?.immatriculation }}</td>
+                  <td>{{ b.carburantNom }}</td>
+                  <td>
+                    <span [ngClass]="{
+                      'badge bg-warning text-dark': b.etat === EtatBon.EN_ATTENTE,
+                      'badge bg-success': b.etat === EtatBon.ACCEPTE,
+                      'badge bg-danger': b.etat === EtatBon.REFUSE
+                    }" class="px-3 py-1 fw-semibold">
+                      {{ b.etat }}
+                    </span>
+                  </td>
+                  <td>
+                    <button *ngIf="b.etat === EtatBon.ACCEPTE" 
+                            class="btn btn-outline-primary btn-sm shadow-sm"
+                            (click)="telechargerPDF(b)">
+                      <i class="bi bi-file-earmark-pdf"></i> PDF
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="bons.length === 0">
+                  <td colspan="7" class="text-center text-muted py-3">
+                    Aucune demande de bon carburant disponible.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>

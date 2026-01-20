@@ -1,0 +1,33 @@
+.fiche-technique {
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+}
+
+.card-header h4 {
+  color: #dc3545;
+  margin-bottom: 0;
+}
+
+.card-header h5 {
+  font-weight: 400;
+  font-size: 1.1rem;
+}
+
+.card-body h5 {
+  margin-top: 1.5rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  color: #343a40;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+p {
+  margin: 0.3rem 0;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+  }
+}

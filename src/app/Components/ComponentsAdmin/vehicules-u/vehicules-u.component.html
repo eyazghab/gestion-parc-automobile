@@ -1,0 +1,123 @@
+<div *ngIf="vehicule" class="card shadow-lg border-0 mt-4">
+  <!-- HEADER -->
+  <div class="card-header bg-white text-white text-center py-4">
+    <h4 class="mb-1">FICHE TECHNIQUE</h4>
+    <p class="text-dark mb-0">{{ vehicule.modelee?.nom }}</p>
+    <hr class="mt-2 mb-0" style="width: 100px; border: 1px solid #ff4d4d;" />
+    <button class="btn btn-outline-danger btn-sm mb-3"
+        (click)="telechargerPDFVehicule(vehicule)">
+  <i class="bi bi-download"></i> PDF
+</button>
+  </div>
+
+  <!-- BODY -->
+  <div class="card-body p-4">
+    <div class="row g-4">
+      <!-- CARACTÉRISTIQUES -->
+      <div class="col-md-6">
+        <h5 class="text-uppercase text-primary fw-bold mb-3">Caractéristiques</h5>
+        <table class="table table-striped table-bordered align-middle">
+          <tbody>
+            <tr><th>Immatriculation</th><td>{{ vehicule.immatriculation }}</td></tr>
+            <tr><th>Châssis</th><td>{{ vehicule.numeroChassis }}</td></tr>
+            <tr><th>Date de circulation</th><td>{{ vehicule.dateCircu | date }}</td></tr>
+            <tr><th>Date d'acquisition</th><td>{{ vehicule.date_acquisition | date }}</td></tr>
+            <tr><th>Kilométrage</th><td>{{ vehicule.kilometrageActuel }} km</td></tr>
+            <tr><th>Année modèle</th><td>{{ vehicule.anneeModel }}</td></tr>
+            <tr><th>Carburant</th><td>{{ vehicule.typeCarburant }}</td></tr>
+            <tr><th>État</th><td><span class="badge bg-info">{{ vehicule.etat }}</span></td></tr>
+            <tr><th>Carrosserie</th><td>{{ vehicule.typeCarrosserie?.type }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+ <!--      UTILISATEUR 
+      <div class="col-md-6">
+        <h5 class="text-uppercase text-primary fw-bold mb-3">Utilisateur</h5>
+        <table class="table table-striped table-bordered align-middle">
+          <tbody>
+            <tr><th>Nom</th><td>{{ vehicule.utilisateur?.prenom }} {{ vehicule.utilisateur?.nom }}</td></tr>
+            <tr><th>Email</th><td>{{ vehicule.utilisateur?.email }}</td></tr>
+            <tr><th>Téléphone</th><td>{{ vehicule.utilisateur?.telephone }}</td></tr>
+          </tbody>
+        </table>
+
+        <h5 class="text-uppercase text-primary fw-bold mt-4 mb-3">Parking</h5>
+        <table class="table table-striped table-bordered align-middle">
+          <tbody>
+            <tr><th>Nom</th><td>{{ vehicule.parking?.nomParking }}</td></tr>
+            <tr><th>Adresse</th><td>{{ vehicule.parking?.adresse }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div> -->
+
+    <!-- ASSURANCES -->
+    <div *ngIf="vehicule.assurances?.length" class="mt-5">
+      <h5 class="text-uppercase text-success fw-bold">Assurances</h5>
+      <table class="table table-hover table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Nom</th><th>Type</th><th>Police</th><th>Montant</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of vehicule.assurances">
+            <td>{{ a.nomAssurance }}</td>
+            <td>{{ a.typeAssurance }}</td>
+            <td>{{ a.numeroPolice }}</td>
+            <td>{{ a.montantPrime | number:'1.2-2' }} €</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MAINTENANCES -->
+    <div *ngIf="vehicule.maintenances?.length" class="mt-5">
+      <h5 class="text-uppercase text-warning fw-bold">Maintenances</h5>
+      <table class="table table-hover table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Date</th><th>Description</th><th>Type</th><th>Coût Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of vehicule.maintenances">
+            <td>{{ m.dateMaintenance | date }}</td>
+            <td>{{ m.description }}</td>
+            <td>{{ m.typeMaintenance }}</td>
+            <td>{{ m.coutTotal }} €</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div *ngIf="vehicule.documents?.length" class="mt-5">
+      <h5 class="text-uppercase text-secondary fw-bold">Documents</h5>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let d of vehicule.documents">{{ d.type }}</li>
+      </ul>
+    </div>
+
+    <!-- SINISTRES -->
+    <div *ngIf="vehicule.sinistres?.length" class="mt-5">
+      <h5 class="text-uppercase text-danger fw-bold">Sinistres</h5>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let s of vehicule.sinistres">
+          <strong>{{ s.typeSinistre }}</strong> - {{ s.lieuSinistre }} : {{ s.degats }}
+        </li>
+      </ul>
+    </div>
+
+    <!-- SUIVIS -->
+    <div *ngIf="vehicule.suivis?.length" class="mt-5">
+      <h5 class="text-uppercase text-info fw-bold">Suivis</h5>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let s of vehicule.suivis">
+          {{ s.date | date }} - Fréquence : {{ s.frequence }} km - Dernier suivi : {{ s.dateDerniersuivi | date }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,220 @@
+/* Conteneur principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Formulaire d'ajout */
+.form-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
+}
+
+.form-container form label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-container form input,
+.form-container form select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-container form input:focus,
+.form-container form select:focus {
+  border-color: #28a745; /* vert bootstrap */
+  outline: none;
+  box-shadow: 0 0 5px rgba(40,167,69,0.5);
+}
+
+.form-container form button[type="submit"] {
+  margin-top: 20px;
+  background-color: #28a745;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-container form button[type="submit"]:disabled {
+  background-color: #94d3a2;
+  cursor: not-allowed;
+}
+
+.form-container form button[type="submit"]:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+/* Bouton Ajouter un véhicule aligné à droite */
+button.btn-success {
+  float: right;
+}
+
+/* Clearfix classique */
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* Recherche */
+.mb-3 input.form-control {
+  max-width: 350px;
+}
+
+/* Table responsive */
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+
+.table thead tr th {
+  border-bottom: 2px solid #0d6efd; /* bootstrap primary */
+  vertical-align: middle;
+  font-weight: 600;
+  text-align: center;
+}
+
+.table tbody tr {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #e9f5ff;
+}
+
+.table tbody tr td {
+  vertical-align: middle;
+}
+
+/* Badge couleurs */
+.badge {
+  font-size: 0.9rem;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  display: inline-block; /* inline-block pour bonne disposition */
+  color: #fff; /* texte blanc */
+  background-color: #007bff; /* bleu bootstrap par défaut */
+}
+
+/* Couleurs personnalisées pour états */
+.bg-warning.text-dark {
+  background-color: #ffc107 !important;
+  color: #212529 !important;
+}
+.bg-primary {
+  background-color: #0d6efd !important;
+  color: #fff !important;
+}
+.bg-info.text-dark {
+  background-color: #0dcaf0 !important;
+  color: #212529 !important;
+}
+.bg-success {
+  background-color: #198754 !important;
+  color: #fff !important;
+}
+
+/* Actions dans la colonne */
+td.text-center {
+  white-space: nowrap; /* empêche le retour à la ligne */
+}
+
+td.text-center button {
+  margin: 4px 6px 6px 0;
+  vertical-align: middle;
+}
+
+td.text-center select.form-select-sm {
+  width: 130px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Icônes Bootstrap (bi) dans boutons */
+button i.bi {
+  font-size: 1.2rem;
+  vertical-align: middle;
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+  .form-container form label,
+  .form-container form input,
+  .form-container form select,
+  .form-container form button[type="submit"] {
+    font-size: 0.9rem;
+  }
+  
+  .mb-3 input.form-control {
+    max-width: 100%;
+  }
+
+  button.btn-success {
+    float:none;
+    width: 100%;
+  }
+  
+}button.btn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0 8px;
+  font-size: 14px;
+  color: #fff;
+  border-radius: 4px;
+  border: none;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-info {
+  background-color: #0dcaf0;
+  color: #000;
+}
+.ligne-desactive {
+  background-color: #f5f5f5; /* gris clair */
+  color: #888;               /* texte grisé */
+  pointer-events: none;      /* empêche clics sur boutons */
+  opacity: 0.6;              /* effet visuel */
+}
+
+
+

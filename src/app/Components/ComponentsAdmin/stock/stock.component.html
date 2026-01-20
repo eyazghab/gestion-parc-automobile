@@ -1,0 +1,208 @@
+<div class="container">
+
+  <!-- Message d'erreur -->
+  <p class="alert alert-danger" *ngIf="error">{{ error }}</p>
+
+  <!-- Alertes stock -->
+  <div *ngIf="alertes.length > 0" class="alert alert-warning">
+    ⚠ <strong>Alerte stock :</strong>
+    <ul>
+      <li *ngFor="let alerte of alertes">
+        {{ alerte.article.nom }} - Stock actuel : {{ alerte.quantite_disp }} (Seuil : {{ alerte.stock_alerte }})
+      </li>
+    </ul>
+  </div>
+
+  <!-- Bouton Ajouter -->
+  <button class="btn btn-success mb-3 float-end" (click)="toggleAddForm()">
+    {{ showAddForm ? 'Annuler' : 'Ajouter un stock' }}
+  </button>
+  <div style="clear:both;"></div>
+
+  <!-- Formulaire ajout -->
+  <div *ngIf="showAddForm" class="card">
+    <h5>Ajouter un stock</h5>
+    <form [formGroup]="stockForm" (ngSubmit)="onAddSubmit()">
+      <div class="mb-3">
+        <label>Article</label>
+        <select formControlName="articleId" class="form-select">
+          <option value="" disabled>Choisir un article</option>
+          <option *ngFor="let a of articles" [value]="a.idArticle">{{ a.nom }} ({{ a.reference }})</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label>Dépôt</label>
+        <select formControlName="depotId" class="form-select">
+          <option value="" disabled>Choisir un dépôt</option>
+          <option *ngFor="let d of depots" [value]="d.idDepot">{{ d.nom }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label>Quantité</label>
+        <input type="number" formControlName="quantite" min="1" class="form-control" />
+      </div>
+      <div class="mb-3">
+        <label>Motif</label>
+        <input type="text" formControlName="motif" placeholder="Motif (optionnel)" class="form-control" />
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="stockForm.invalid">Ajouter</button>
+    </form>
+  </div>
+
+  <!-- Formulaire édition, sortie et transfert -->
+  <div *ngIf="showEditForm || showSortieForm || showTransfertForm">
+   <div *ngIf="showEditForm" class="card shadow-sm p-4 mb-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5><i class="bi bi-pencil-square"></i> Éditer stock : {{ selectedStock?.article?.nom }}</h5>
+    <button class="btn btn-secondary btn-sm" (click)="showEditForm=false">
+      <i class="bi bi-x-circle"></i> Annuler
+    </button>
+  </div>
+
+  <form [formGroup]="editForm" (ngSubmit)="onEditSubmit()">
+    <div class="row g-3">
+
+      <!-- Article -->
+      <div class="col-md-6">
+        <label class="form-label">Article</label>
+        <select formControlName="articleId" class="form-select">
+          <option value="" disabled>Choisir un article</option>
+          <option *ngFor="let a of articles" [value]="a.idArticle">{{ a.nom }} ({{ a.reference }})</option>
+        </select>
+      </div>
+
+      <!-- Dépôt -->
+      <div class="col-md-6">
+        <label class="form-label">Dépôt</label>
+        <select formControlName="depotId" class="form-select">
+          <option value="" disabled>Choisir un dépôt</option>
+          <option *ngFor="let d of depots" [value]="d.idDepot">{{ d.nom }}</option>
+        </select>
+      </div>
+
+      <!-- Quantité disponible -->
+      <div class="col-md-4">
+        <label class="form-label">Quantité disponible</label>
+        <input type="number" formControlName="quantite" min="0" class="form-control" />
+      </div>
+
+      <!-- Stock minimum -->
+      <div class="col-md-4">
+        <label class="form-label">Stock minimum</label>
+        <input type="number" formControlName="stockMin" min="0" class="form-control" />
+      </div>
+
+      <!-- Stock alerte -->
+      <div class="col-md-4">
+        <label class="form-label">Stock alerte</label>
+        <input type="number" formControlName="stockAlerte" min="0" class="form-control" />
+      </div>
+
+      <!-- Motif -->
+      <div class="col-12">
+        <label class="form-label">Motif</label>
+        <input type="text" formControlName="motif" placeholder="Motif (optionnel)" class="form-control" />
+      </div>
+
+    </div>
+
+    <!-- Boutons -->
+    <div class="mt-4 d-flex gap-2">
+      <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">
+        <i class="bi bi-check-circle"></i> Mettre à jour
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="showEditForm=false">
+        <i class="bi bi-x-circle"></i> Annuler
+      </button>
+    </div>
+  </form>
+</div>
+
+
+    <ng-container *ngIf="showSortieForm" class="card mb-3">
+      <h5>Sortie stock : {{ selectedStock?.article?.nom }}</h5>
+      <form [formGroup]="sortieForm" (ngSubmit)="onSortieSubmit()">
+        <div class="mb-3">
+          <label>Quantité</label>
+          <input type="number" formControlName="quantite" min="1" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Motif</label>
+          <input type="text" formControlName="motif" placeholder="Motif (optionnel)" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-warning" [disabled]="sortieForm.invalid">Confirmer sortie</button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="showSortieForm=false">Annuler</button>
+      </form>
+    </ng-container>
+
+    <ng-container *ngIf="showTransfertForm" class="card mb-3">
+      <h5>Transfert stock : {{ selectedStock?.article?.nom }}</h5>
+      <form [formGroup]="transfertForm" (ngSubmit)="onTransfertSubmit()">
+        <div class="mb-3">
+          <label>Dépôt destination</label>
+          <select formControlName="depotDestinationId" class="form-select">
+            <option *ngFor="let d of depots" [value]="d.idDepot">{{ d.nom }}</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label>Quantité</label>
+          <input type="number" formControlName="quantite" min="1" class="form-control" />
+        </div>
+        <div class="mb-3">
+          <label>Motif</label>
+          <input type="text" formControlName="motif" placeholder="Motif (optionnel)" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-info" [disabled]="transfertForm.invalid">Transférer</button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="showTransfertForm=false">Annuler</button>
+      </form>
+    </ng-container>
+  </div>
+
+  <!-- Tableau des stocks -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle mt-4">
+      <thead class="table-primary">
+        <tr>
+          <th>Article</th>
+          <th>Dépôt</th>
+          <th>Quantité dispo</th>
+          <th>Quantité réservée</th>
+          <th>Stock min</th>
+          <th>Stock alerte</th>
+          <th>Dernière entrée</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of filteredStocks">
+          <td>{{ s.article?.nom }} ({{ s.article?.reference }})</td>
+          <td>{{ s.depot?.nom }}</td>
+          <td>{{ s.quantite_disp }}</td>
+          <td>{{ s.quantite_reservee }}</td>
+          <td>{{ s.stock_min }}</td>
+          <td>{{ s.stock_alerte }}</td>
+          <td>{{ s.date_dernier_entree | date:'dd/MM/yyyy' }}</td>
+          <td>
+            <div class="btn-group-stock">
+              <button class="btn btn-warning btn-sm" (click)="openSortieModal(s)">
+                <i class="bi bi-box-arrow-in-down"></i> Sortie
+              </button>
+              <button class="btn btn-info btn-sm" (click)="openTransfertModal(s)">
+                <i class="bi bi-arrow-left-right"></i> Transfert
+              </button>
+              <button class="btn btn-primary btn-sm" (click)="openEditModal(s)">
+                <i class="bi bi-pencil"></i> Éditer
+              </button>
+              <button *ngIf="s.actif" class="btn btn-danger btn-sm" (click)="toggleActif(s)">
+                <i class="bi bi-x-circle"></i> Désactiver
+              </button>
+              <button *ngIf="!s.actif" class="btn btn-success btn-sm" (click)="toggleActif(s)">
+                <i class="bi bi-check-circle"></i> Activer
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

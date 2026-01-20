@@ -1,0 +1,27 @@
+<div class="table-container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Article</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Motif</th>
+        <th>Quantité Ajoutée</th>
+        <th>Avant</th>
+        <th>Après</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let m of mouvements">
+        <td data-label="Article">{{ m.article?.nom }}</td>
+        <td data-label="Type">{{ m.type }}</td>
+        <td data-label="Date">{{ m.date | date:'short' }}</td>
+        <td data-label="Motif">{{ m.motif }}</td>
+
+        <td data-label="Quantité">{{ m.quantite }}</td>
+        <td data-label="Avant">{{ m.quantiteAvant }}</td>
+        <td data-label="Après">{{ m.quantiteApres }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

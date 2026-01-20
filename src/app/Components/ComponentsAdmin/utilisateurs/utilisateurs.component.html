@@ -1,0 +1,51 @@
+<div class="container mt-4">
+  <h2 class="mb-3">Liste des Utilisateurs</h2>
+
+  <p class="alert alert-danger" *ngIf="error">{{ error }}</p>
+
+  <!-- Recherche par CIN -->
+<div class="mb-3">
+  <input type="text" class="form-control" placeholder="Rechercher par CIN"
+         [(ngModel)]="searchCin" (ngModelChange)="filtrerUtilisateurs()" />
+</div>
+
+
+  <table class="table table-bordered table-hover"> 
+    <thead class="table-light">
+      <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th>CIN</th>
+        <th>Date d'embauche</th>
+        <th>Rôle</th>
+        <th>Statut</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let utilisateur of utilisateursFiltres">
+        <td>{{ utilisateur.nom }}</td>
+        <td>{{ utilisateur.prenom }}</td>
+        <td>{{ utilisateur.email }}</td>
+        <td>{{ utilisateur.telephone }}</td>
+        <td>{{ utilisateur.cin }}</td>
+        <td>{{ utilisateur.dateEmbauche | date:'dd/MM/yyyy' }}</td>
+        <td>{{ utilisateur.role }}</td>
+        <td>
+          <span class="badge" [ngClass]="utilisateur.actif ? 'bg-success' : 'bg-secondary'">
+            {{ utilisateur.actif ? 'Actif' : 'Inactif' }}
+          </span>
+        </td>
+        <td>
+          <button class="btn btn-sm" 
+                  [ngClass]="utilisateur.actif ? 'btn-danger' : 'btn-success'"
+                  (click)="activerDesactiver(utilisateur)">
+            {{ utilisateur.actif ? 'Désactiver' : 'Activer' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

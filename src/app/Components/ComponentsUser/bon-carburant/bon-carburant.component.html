@@ -1,0 +1,95 @@
+<header class="masthead bg-dark text-white py-5">
+  <div class="container px-4 px-lg-5 h-100">
+    <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-8">
+
+        <div class="card shadow-lg border-0 rounded-4 text-start">
+          <div class="card-body p-4 p-lg-5">
+
+            <h4 class="mb-4 text-primary">➕ Ajouter un Bon Carburant</h4>
+
+            <form [formGroup]="bonForm" (ngSubmit)="ajouterBon()">
+              <!-- Véhicule -->
+              <div class="mb-3">
+                <label for="vehicule" class="form-label fw-semibold">Véhicule</label>
+                <div class="input-group">
+                  <span class="input-group-text">🚗</span>
+                  <select id="vehicule" class="form-select" formControlName="vehiculeId"
+                    (change)="onVehiculeChange($event)">
+                    <option value="">-- Sélectionner --</option>
+                    <option *ngFor="let v of vehiculesUtilisateur" [value]="v.idVehicule">
+                      {{ v.immatriculation }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Missions associées -->
+              <div class="mb-3" *ngIf="missionsPourVehicule.length > 0">
+                <label for="mission" class="form-label fw-semibold">Mission</label>
+                <select id="mission" class="form-select" formControlName="missionId">
+                  <option value="">-- Sélectionner --</option>
+                  <option *ngFor="let m of missionsPourVehicule" [value]="m.id">
+                    {{ m.destination }} - {{ m.motif }}
+                  </option>
+                </select>
+              </div>
+
+
+              <!-- Carburant -->
+              <div class="mb-3">
+                <label for="carburant" class="form-label fw-semibold">Type de Carburant</label>
+                <div class="input-group">
+                  <span class="input-group-text">⛽</span>
+                  <select id="carburant" class="form-select" formControlName="carburantId">
+                    <option value="">-- Sélectionner --</option>
+                    <option *ngFor="let c of carburants" [value]="c.idCarburant">{{ c.typeCarburant }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Quantité -->
+              <div class="mb-3">
+                <label for="quantite" class="form-label fw-semibold">Quantité (L)</label>
+                <div class="input-group">
+                  <span class="input-group-text">⚖️</span>
+                  <input type="number" class="form-control" id="quantite" formControlName="quantite"
+                    placeholder="Ex: 50">
+                </div>
+              </div>
+
+              <!-- Montant -->
+              <!--  <div class="mb-3">
+                <label for="montant" class="form-label fw-semibold">Montant (€)</label>
+                <div class="input-group">
+                  <span class="input-group-text">💰</span>
+                  <input type="number" class="form-control" id="montant" formControlName="montant" placeholder="Ex: 120">
+                </div>
+              </div> -->
+
+              <!-- Date -->
+              <div class="mb-4">
+                <label for="dateAchat" class="form-label fw-semibold">Date d'achat</label>
+                <div class="input-group">
+                  <span class="input-group-text">📅</span>
+                  <input type="date" class="form-control" id="dateAchat" formControlName="dateAchat">
+                </div>
+              </div>
+
+              <!-- Bouton -->
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm"
+                  [disabled]="bonForm.invalid">
+                  ➕ Ajouter
+                </button>
+              </div>
+
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</header>

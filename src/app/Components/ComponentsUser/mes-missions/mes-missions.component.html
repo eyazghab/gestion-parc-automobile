@@ -1,0 +1,80 @@
+<header class="masthead d-flex align-items-center">
+  <div class="container px-4 px-lg-5">
+    <div class="row justify-content-center text-center w-100">
+      <div class="col-lg-10">
+
+        <!-- Titre -->
+        <h1 class="text-white font-weight-bold mb-4">Mes Ordres de Mission</h1>
+
+        <!-- Tableau des missions -->
+        <div class="form-container">
+          <div class="p-4 shadow rounded bg-light">
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Destination</th>
+                    <th>Véhicule</th>
+                    <th>Motif</th>
+                    <th>Date Départ</th>
+                    <th>Date Retour</th>
+                    <th>État</th>
+                    <th class="text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let mission of missions; let i = index">
+                    <td>{{ mission.destination }}</td>
+                    <td>{{ mission.vehiculeImmatriculation || 'Non défini' }}</td>
+                    <td>{{ mission.motif }}</td>
+                    <td>{{ mission.dateDepart | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td>{{ mission.dateRetour | date: 'dd/MM/yyyy HH:mm' }}</td>
+                    <td>
+                      <span class="badge" [ngClass]="{
+                        'bg-success': mission.etat === 'ACCEPTEE',
+                        'bg-warning text-dark': mission.etat === 'EN_ATTENTE',
+                        'bg-danger': mission.etat === 'REFUSEE' || mission.etat === 'ANNULEE',
+                        'bg-primary': mission.etat === 'TERMINEE',
+                        'bg-info text-dark': mission.etat === 'EN_COURS'
+                      }">
+                        {{ mission.etat }}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <!-- PDF toujours visible -->
+                      <button class="btn btn-outline-primary btn-sm me-1" (click)="telechargerPDF(mission)">
+                        <i class="bi bi-download"></i> PDF
+                      </button>
+
+                      <!-- EN_ATTENTE -->
+                      <button class="btn btn-outline-danger btn-sm me-1" *ngIf="mission.etat === 'EN_ATTENTE'"
+                        (click)="annulerMission(mission.id)">
+                        <i class="bi bi-x-circle"></i> Annuler
+                      </button>
+
+                      <!-- ACCEPTEE -->
+                      <button class="btn btn-outline-info btn-sm me-1" *ngIf="mission.etat === 'ACCEPTEE'"
+                        (click)="demarrerMission(mission.id)">
+                        🚗 Démarrer
+                      </button>
+
+                      <!-- EN_COURS -->
+                      <button class="btn btn-outline-success btn-sm me-1" *ngIf="mission.etat === 'EN_COURS'"
+                        (click)="terminerMission(mission.id)">
+                        <i class="bi bi-check-circle"></i> Terminer
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr *ngIf="missions.length === 0">
+                    <td colspan="7" class="text-center">Aucune mission disponible.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

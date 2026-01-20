@@ -1,0 +1,56 @@
+<header class="masthead">
+  <div class="container px-4 px-lg-5 h-100">
+    <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-8 align-self-end">
+        <h1 class="text-white font-weight-bold">Demande Ordre Mission</h1>
+        <div class="form-container">
+
+          <form [formGroup]="ordreForm" (ngSubmit)="onSubmit()">
+
+            <!-- Objet -->
+            <label for="objetMission">Objet de la mission</label>
+            <input id="objetMission" type="text" formControlName="objetMission" required />
+            <div class="error" *ngIf="ordreForm.get('objetMission')?.touched && ordreForm.get('objetMission')?.invalid">
+              Ce champ est requis.
+            </div>
+
+            <!-- Destination -->
+            <label for="destination">Destination</label>
+            <input id="destination" type="text" formControlName="destination" required />
+            <div class="error" *ngIf="ordreForm.get('destination')?.touched && ordreForm.get('destination')?.invalid">
+              Ce champ est requis.
+            </div>
+
+            <!-- Motif -->
+            <label for="motif">Motif</label>
+            <input id="motif" type="text" formControlName="motif" required />
+            <div class="error" *ngIf="ordreForm.get('motif')?.touched && ordreForm.get('motif')?.invalid">
+              Ce champ est requis.
+            </div>
+
+            <!-- Date et heure de départ -->
+            <label for="dateDepart">Date et heure de départ</label>
+            <input id="dateDepart" type="datetime-local" formControlName="dateDepart" required [min]="minDate"
+              [max]="maxDate" />
+            <div class="error" *ngIf="ordreForm.get('dateDepart')?.touched && ordreForm.get('dateDepart')?.invalid">
+              Sélectionnez une date et une heure valides.
+            </div>
+
+            <!-- Date et heure de retour -->
+            <label for="dateRetour">Date et heure de retour</label>
+            <input id="dateRetour" type="datetime-local" formControlName="dateRetour" required
+              [min]="ordreForm.get('dateDepart')?.value || minDate" [max]="maxDate" />
+            <div class="error" *ngIf="ordreForm.get('dateRetour')?.touched && ordreForm.get('dateRetour')?.invalid">
+              Sélectionnez une date et une heure valides.
+            </div>
+            <!-- Soumettre -->
+            <button type="submit" [disabled]="ordreForm.invalid">
+              📨 Envoyer la demande
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,56 @@
+/* Style général des cartes */
+.card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Effet hover sur la carte */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Image de la carte */
+.card-img-top {
+  height: 180px;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+/* Zoom image au hover */
+.card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* Description limitée à 3 lignes */
+.card-text.text-truncate {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Badge état */
+.badge {
+  font-size: 0.8rem;
+  padding: 0.35em 0.5em;
+}
+
+/* Bouton dans la carte */
+.btn-group button {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Style fallback si pas d'image */
+.card-img-top.bg-light {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+/* Responsive spacing */
+.row.g-4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}

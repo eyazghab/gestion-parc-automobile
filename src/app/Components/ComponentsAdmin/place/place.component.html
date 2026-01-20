@@ -1,0 +1,94 @@
+<div class="container mt-5">
+  <h2 class="mb-4 text-center text-primary">Liste des Places de Parking</h2>
+
+  <!-- Bouton Ajouter une place aligné à droite -->
+  <div class="mb-3 text-end">
+    <button class="btn btn-success" (click)="toggleAddForm()">
+      {{ showAddForm ? 'Annuler' : 'Ajouter une place' }}
+    </button>
+  </div>
+
+  <!-- Formulaire d'ajout -->
+  <div *ngIf="showAddForm" class="card shadow-sm mb-4 p-4 form-container">
+    <h5 class="text-secondary mb-3">Ajouter / Modifier une Place</h5>
+    <form [formGroup]="placeForm" (ngSubmit)="onAddSubmit()">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Nom de la place</label>
+          <input type="text" formControlName="nom" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Numéro de place</label>
+          <input type="number" formControlName="numeroPlace" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Occupée</label>
+          <select class="form-select" formControlName="estOccupee">
+            <option [ngValue]="true">Oui</option>
+            <option [ngValue]="false">Non</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Parking associé</label>
+        <select class="form-select" formControlName="parking" required>
+          <option value="">-- Sélectionner un parking disponible --</option>
+          <option *ngFor="let p of parkings" [value]="p.id">
+            {{ p.nomParking }} (Capacité : {{ p.capacite }})
+          </option>
+        </select>
+      </div>
+
+
+      <div class="mt-3 text-end">
+        <button type="submit" class="btn btn-primary me-2" [disabled]="placeForm.invalid">Enregistrer</button>
+        <button type="button" class="btn btn-secondary" (click)="showAddForm = false">Annuler</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Recherche -->
+  <input type="text" class="form-control mb-3 shadow-sm"
+    placeholder="Rechercher une place, un parking ou un véhicule..." [(ngModel)]="searchTerm" />
+
+  <!-- Liste des places -->
+  <div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover align-middle">
+      <thead class="table-primary text-center">
+        <tr>
+          <th>Nom</th>
+          <th>Numéro</th>
+          <th>Parking</th>
+          <th>Véhicule</th>
+          <th>Occupée</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let place of filteredPlaces()" class="text-center">
+          <td>{{ place.nom }}</td>
+          <td>{{ place.numeroPlace }}</td>
+          <td>{{ place.parking?.nomParking || 'Non défini' }}</td>
+          <td>{{ place.vehicule?.immatriculation || 'Aucun' }}</td>
+          <td>
+            <span class="badge fs-6 px-3 py-2" [ngClass]="place.estOccupee ? 'bg-danger' : 'bg-success'">
+              {{ place.estOccupee ? 'Occupée' : 'Libre' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn btn-warning btn-sm me-1 action-btn" (click)="modifier(place)" title="Modifier">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn btn-danger btn-sm me-1 action-btn" (click)="supprimer(place)" title="Supprimer">
+              <i class="bi bi-trash"></i>
+            </button>
+            <button class="btn btn-secondary btn-sm action-btn" (click)="basculerEtat(place)">
+              {{ place.estOccupee ? 'Libérer' : 'Occuper' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

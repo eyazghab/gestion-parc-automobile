@@ -1,0 +1,22 @@
+<h2>Liste des entreprises</h2>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Adresse</th>
+      <th>Email</th>
+      <th>Téléphone</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of entreprises">
+      <td>{{ e.idEntreprise }}</td>
+      <td>{{ e.nomEntreprise }}</td>
+      <td>{{ e.adresse }}</td>
+      <td>{{ e.email }}</td>
+      <td>{{ e.telephone }}</td>
+    </tr>
+  </tbody>
+</table>

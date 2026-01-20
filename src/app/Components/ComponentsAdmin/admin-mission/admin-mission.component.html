@@ -1,0 +1,91 @@
+<div class="container mt-5">
+  <h2 class="mb-4 text-center text-primary">Ordres de Mission</h2>
+
+  <div class="mb-4 text-center">
+    <input type="text" class="form-control w-50 mx-auto" placeholder="Filtrer par immatriculation"
+      [(ngModel)]="vehiculeFilter" (input)="applyFilter()">
+  </div>
+<div class="mb-4 text-center">
+  <button class="btn btn-primary" (click)="optimiserMissions()">
+    <i class="bi bi-robot"></i> Optimiser automatiquement
+  </button>
+</div>
+  <div class="row g-3">
+    <div class="col-md-6 col-lg-4" *ngFor="let mission of filteredMissions">
+      <div class="card shadow-sm h-100 mission-card">
+        <div class="card-body">
+          <h5 class="card-title text-truncate">{{ mission.motif }}</h5>
+          <p class="card-text mb-1"><strong>Véhicule:</strong> {{ mission.vehiculeImmatriculation }}</p>
+          <p class="card-text mb-1"><strong>Destination:</strong> {{ mission.destination }}</p>
+          <p class="card-text mb-1"><strong>Date Départ:</strong> {{ mission.dateDepart | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p class="card-text mb-1"><strong>Date Retour:</strong> {{ mission.dateRetour | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p class="card-text mb-1">
+            <strong>État:</strong>
+            <span class="badge fw-bold" [ngClass]="{
+                'bg-warning text-dark': mission.etat === 'EN_ATTENTE',
+                'bg-success': mission.etat === 'ACCEPTEE',
+                'bg-danger': mission.etat === 'REFUSEE'
+              }">
+              {{ mission.etat }}
+            </span>
+          </p>
+          <p class="card-text mb-3"><strong>Utilisateur:</strong> {{ mission.utilisateurNom }}</p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <!-- Sélecteur de véhicule -->
+              <select class="form-select form-select-sm w-50 me-2" [(ngModel)]="mission.selectedVehiculeId"
+                [disabled]="mission.etat !== 'EN_ATTENTE'">
+                <option [ngValue]="null" disabled selected>-- Choisir un véhicule --</option>
+                <option *ngFor="let v of mission.vehiculesDisponibles" [ngValue]="v.idVehicule">
+                  {{ v.immatriculation }}
+                </option>
+              </select>
+
+              <!-- Bouton Accepter -->
+              <button class="btn btn-success btn-sm" (click)="assignerVehiculeEtAccepter(mission)"
+                [disabled]="mission.etat !== 'EN_ATTENTE' || !mission.selectedVehiculeId">
+                <i class="bi bi-check-circle"></i> Accepter
+              </button>
+
+              <!-- Bouton Refuser -->
+              <button class="btn btn-danger btn-sm" (click)="changerEtat(mission.id, 'REFUSEE')"
+                [disabled]="mission.etat !== 'EN_ATTENTE'">
+                <i class="bi bi-x-circle"></i> Refuser
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Historique -->
+<div class="mt-5">
+  <h3 class="text-primary mb-3">Historique des missions</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Véhicule</th>
+          <th>Destination</th>
+          <th>Motif</th>
+          <th>Date Départ</th>
+          <th>Date Retour</th>
+          <th>État</th>
+          <th>Utilisateur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mission of historiqueMissions">
+          <td>{{ mission.vehiculeImmatriculation }}</td>
+          <td>{{ mission.destination }}</td>
+          <td>{{ mission.motif }}</td>
+          <td>{{ mission.dateDepart | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ mission.dateRetour | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ mission.etat }}</td>
+          <td>{{ mission.utilisateurNom }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

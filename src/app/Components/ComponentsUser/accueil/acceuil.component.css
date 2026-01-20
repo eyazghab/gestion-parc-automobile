@@ -1,0 +1,77 @@
+.accueil-container {
+  padding: 40px 20px;
+  text-align: center;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.accueil-container h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.intro-text {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.feature-card {
+  background-color: #f2f2f2;
+  border-radius: 12px;
+  padding: 25px;
+  width: 280px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-icon {
+  font-size: 40px;
+  color: #3333c7;   
+  margin-bottom: 10px;
+}
+
+.feature-card h3 {
+  color: #02070cd8;
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  color: #555;
+  font-size: 0.95rem;
+}
+.action-link {
+  margin-top: 30px;
+}
+
+.btn-connexion {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-connexion:hover {
+  background-color: #e4c86e;
+}
+
+.btn-connexion i {
+  margin-right: 8px;
+}

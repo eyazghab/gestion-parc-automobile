@@ -1,0 +1,172 @@
+<!-- FontAwesome pour les icônes -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<header class="masthead py-4 bg-primary text-white text-center mb-4">
+  <div class="container">
+    <h1>Inscription</h1>
+    <p>Créez votre compte pour accéder à la plateforme</p>
+  </div>
+</header>
+
+<section class="page-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+
+        <!-- Formulaire d'inscription -->
+        <div class="card p-4 mb-4 shadow-sm" *ngIf="!showVerifyCode">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <h3 class="text-center mb-4">Créer un compte</h3>
+            <div class="row g-3">
+
+              <!-- Nom -->
+              <div class="col-md-6">
+                <label for="nom" class="form-label">Nom</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-user"></i></span>
+                  <input id="nom" formControlName="nom" type="text" class="form-control"
+                    [ngClass]="{'is-invalid': form.get('nom')?.invalid && form.get('nom')?.touched}" />
+                  <div class="invalid-feedback">Le nom est requis.</div>
+                </div>
+              </div>
+
+              <!-- Prénom -->
+              <div class="col-md-6">
+                <label for="prenom" class="form-label">Prénom</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-user"></i></span>
+                  <input id="prenom" formControlName="prenom" type="text" class="form-control"
+                    [ngClass]="{'is-invalid': form.get('prenom')?.invalid && form.get('prenom')?.touched}" />
+                  <div class="invalid-feedback">Le prénom est requis.</div>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                  <input id="email" formControlName="email" type="email" class="form-control"
+                    [ngClass]="{'is-invalid': form.get('email')?.invalid && form.get('email')?.touched}" />
+                  <div class="invalid-feedback">Email invalide.</div>
+                </div>
+              </div>
+
+              <!-- Mot de passe -->
+              <div class="col-md-6">
+                <label for="motDePasse" class="form-label">Mot de passe</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                  <input id="motDePasse" formControlName="motDePasse" type="password" class="form-control"
+                    [ngClass]="{'is-invalid': form.get('motDePasse')?.invalid && form.get('motDePasse')?.touched}" />
+                  <div class="invalid-feedback">Le mot de passe est requis.</div>
+                </div>
+              </div>
+
+              <!-- Téléphone -->
+              <div class="col-md-6">
+                <label for="telephone" class="form-label">Téléphone</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                  <input id="telephone" formControlName="telephone" type="text" class="form-control"
+                    [ngClass]="{'is-invalid': form.get('telephone')?.invalid && form.get('telephone')?.touched}" />
+                  <div class="invalid-feedback">Téléphone requis.</div>
+                </div>
+              </div>
+
+              <!-- CIN -->
+              <div class="col-md-6">
+                <label for="cin" class="form-label">CIN</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-id-card"></i></span>
+                  <input id="cin" formControlName="cin" type="text" class="form-control"
+                    [ngClass]="{'is-invalid': form.get('cin')?.invalid && form.get('cin')?.touched}" />
+                  <div class="invalid-feedback">CIN requis (8 chiffres).</div>
+                </div>
+              </div>
+
+              <!-- Code CNAM -->
+              <div class="col-md-6">
+                <label for="codeCnam" class="form-label">Matricule</label>
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-key"></i></span>
+                  <input id="codeCnam" formControlName="codeCnam" [type]="showCodeCnam ? 'text' : 'password'"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': form.get('codeCnam')?.invalid && form.get('codeCnam')?.touched}" />
+                  <button type="button" class="btn btn-outline-secondary" (click)="showCodeCnam = !showCodeCnam">
+                    {{ showCodeCnam ? '👁️‍🗨️' : '👁️' }}
+                  </button>
+                </div>
+                <div class="invalid-feedback d-block" *ngIf="form.get('codeCnam')?.errors?.['required']">
+                  Le matricule est requis.
+                </div>
+                <div class="invalid-feedback d-block" *ngIf="form.get('codeCnam')?.errors?.['pattern']">
+                  Le code CNAM doit contenir exactement 10 lettres et/ou chiffres.
+                </div>
+              </div>
+
+              <!-- Date d'embauche -->
+              <div class="col-md-6">
+                <label for="dateEmbauche" class="form-label">Date d'embauche</label>
+                <input id="dateEmbauche" formControlName="dateEmbauche" type="date" class="form-control"
+                  [ngClass]="{'is-invalid': form.get('dateEmbauche')?.invalid && form.get('dateEmbauche')?.touched}" />
+                <div class="invalid-feedback">Date d'embauche requise.</div>
+              </div>
+
+              <!-- Département -->
+              <div class="col-md-6">
+                <label for="departementId" class="form-label">Département</label>
+                <select id="departementId" formControlName="departementId" class="form-select"
+                  [ngClass]="{'is-invalid': form.get('departementId')?.invalid && form.get('departementId')?.touched}">
+                  <option value="" disabled>-- Sélectionnez un département --</option>
+                  <option *ngFor="let dep of departements" [value]="dep.id">{{ dep.nom }}</option>
+                </select>
+                <div class="invalid-feedback">Le département est requis.</div>
+              </div>
+
+              <!-- Bouton inscription -->
+              <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg w-50" [disabled]="form.invalid">
+                  S'inscrire
+                </button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+        <!-- Formulaire de vérification -->
+        <div class="card p-4 mb-4 shadow-sm" *ngIf="showVerifyCode">
+          <h3 class="text-center mb-4">Vérification de votre compte</h3>
+          <form [formGroup]="codeForm" (ngSubmit)="verifyCode()">
+            <div class="mb-3">
+            <!-- <label for="code" class="form-label">Code de vérification</label> -->
+              <input id="code" type="text" formControlName="code" class="form-control w-50 mx-auto rounded-3" />
+              <div class="invalid-feedback d-block"
+                *ngIf="codeForm.get('code')?.invalid && codeForm.get('code')?.touched">
+                Le code est requis.
+              </div>
+            </div>
+
+            <!-- reCAPTCHA -->
+            <div class="mb-3 text-center">
+              <div id="recaptcha-container"></div>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-success btn-lg w-50" [disabled]="codeForm.invalid">
+                Vérifier
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="text-center mt-4 py-3 bg-light">
+  <p>© 2025 Votre plateforme. Tous droits réservés.</p>
+</footer>

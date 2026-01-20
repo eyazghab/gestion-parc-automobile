@@ -1,0 +1,378 @@
+/* Reset simple */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Pour que la navbar fixe ne masque pas le contenu */
+body, html {
+  height: 100%;
+  padding-top: 70px; /* hauteur navbar */
+}
+
+/* Navbar */
+#mainNav {
+  background-color: #539ae0; /* bleu bootstrap */
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  z-index: 1050;
+}
+
+#mainNav .navbar-brand {
+  color: white;
+  font-weight: 700;
+}
+
+#mainNav .navbar-brand:hover {
+  color: #d0e6ff;
+}
+
+#mainNav .nav-link {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+#mainNav .nav-link:hover, 
+#mainNav .nav-link.active {
+  color: #cce5ff;
+}
+
+/* Badge notifications */
+#mainNav .badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* Wrapper pour sidebar + contenu */
+.wrapper {
+  display: flex;
+  min-height: calc(100vh - 70px); /* sous navbar */
+  background-color: #f4f6f9;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #343a40;
+  color: #c2c7d0;
+  display: flex;
+  flex-direction: column;
+  position: fixed; /* fixée sur la gauche */
+  top: 70px; /* sous navbar */
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  padding-top: 1rem;
+}
+
+.sidebar-header {
+  padding: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: white;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 1rem;
+  flex-grow: 1;
+}
+
+.sidebar-menu li {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: #c2c7d0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar-menu li a:hover,
+.sidebar-menu li.active a {
+  background-color: #007bff;
+  color: white;
+}
+
+.sidebar-menu li a i {
+  margin-right: 12px;
+  min-width: 20px;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* Main content */
+.main-content {
+  margin-left: 220px; /* largeur sidebar */
+  flex-grow: 1;
+  padding: 20px 30px;
+  background-color: #fff;
+  min-height: calc(100vh - 70px);
+  overflow-y: auto;
+}
+
+/* Header contenu */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.main-header h1 {
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #555;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* Section content */
+.content h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.content p {
+  margin-bottom: 30px;
+  color: #666;
+}
+
+/* Cartes */
+.card-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 25px;
+  flex: 1 1 250px;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+  text-align: center;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  box-shadow: 0 6px 15px rgb(0 0 0 / 0.2);
+}
+
+.card-icon {
+  font-size: 48px;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    width: 180px;
+    height: calc(100vh - 70px);
+    left: -180px;
+    transition: left 0.3s ease;
+    z-index: 2000;
+  }
+  .sidebar.show {
+    left: 0;
+  }
+  .main-content {
+    margin-left: 0;
+    padding: 15px;
+  }
+  .admin-container {
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: #ec9615;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  .card {
+    background: transparent;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px #f3f2f2;
+  }
+  
+  .icon {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-bottom: 0.5rem;
+  }
+  
+  h3 {
+    margin: 0.5rem 0;
+    color: beige;
+  }
+  
+  p {
+    color: #f1ecec;
+    font-size: 0.9rem;
+  }
+  
+
+}
+/* Style spécifique pour la section content avec ta grille de features */
+section.content {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: #333;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+section.content h2 {
+  font-size: 2.2rem;
+  color: #ec9615;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+section.content p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Grille responsive */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Cartes features */
+.grid .card {
+  background-color: white;
+  padding: 1.6rem 1.4rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.07);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  user-select: none;
+  border: 1px solid transparent;
+}
+
+.grid .card:hover,
+.grid .card:focus {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  border-color: #0907b3;
+  outline: none;
+}
+
+.grid .card:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 3px;
+}
+
+.grid .icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  user-select: none;
+}
+
+.grid h3 {
+  margin: 0 0 0.6rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #ec9615;
+  text-align: center;
+}
+
+.grid p {
+  font-size: 0.95rem;
+  color: #666;
+  text-align: center;
+  margin: 0;
+  line-height: 1.3;
+}
+
+/* dashboard.component.css */
+
+/* Container des cartes */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+/* Carte */
+.card {
+  position: relative; /* nécessaire pour le badge */
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Badge */
+.card .badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 1rem;      /* plus grand */
+  padding: 0.5rem 0.7rem; /* plus de padding */
+  border-radius: 50%;   /* rond */
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,14 @@
+<div class="container mt-4">
+  <h2>Vérification du compte</h2>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="code">Code de vérification :</label>
+      <input id="code" type="text" class="form-control" formControlName="code" placeholder="Entrez le code reçu par email">
+    </div>
+
+    <button type="submit" class="btn btn-success">Vérifier</button>
+  </form>
+
+  <div *ngIf="success" class="alert alert-success mt-3">{{ success }}</div>
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+</div>

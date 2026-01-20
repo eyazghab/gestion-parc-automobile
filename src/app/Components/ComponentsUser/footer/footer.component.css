@@ -1,0 +1,24 @@
+/* Style des icônes sociales */
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-icons a {
+  color: #e4e7e5;  /* gris clair */
+  font-size: 1.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.social-icons a:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 8px rgba(240, 240, 236, 0.95);
+  color: #0d6efd; /* bleu au hover */
+}
+
+/* Forcer le vert Bootstrap sur les liens de contact */
+footer a.text-success {
+  color: #198754 !important;
+}

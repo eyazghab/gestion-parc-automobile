@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">Liste des Suivis</h2>
+
+  <table class="table table-bordered table-hover">
+    <thead class="table-light">
+      <tr>
+        <th>Immatriculation</th>
+        <th>Description</th>
+        <th>Date dernier suivi</th>
+        <th>Kilométrage actuel</th>
+        <th>Alertes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let suivi of suivis">
+        <!-- Immatriculation cliquable -->
+        <td>
+          <a (click)="voirDetails(suivi.vehicule?.idVehicule)" 
+             style="cursor:pointer; color:#0d6efd; text-decoration: underline;">
+            {{ suivi.vehicule?.immatriculation }}
+          </a>
+        </td>
+
+        <!-- Description -->
+        <td>{{ suivi.description }}</td>
+
+        <!-- Date du dernier suivi -->
+        <td>{{ suivi.dateDerniersuivi | date:'dd/MM/yyyy' }}</td>
+
+        <!-- Kilométrage actuel -->
+        <td>{{ suivi.kilometreActuel | number }} km</td>
+
+        <!-- Alertes -->
+        <td>
+          <ul class="mb-0">
+            <li *ngFor="let alerte of suivi.alertes" class="text-danger">
+              {{ alerte }}
+            </li>
+            <li *ngIf="!suivi.alertes || suivi.alertes.length === 0" class="text-success">
+              Aucune alerte
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,69 @@
+<header class="masthead">
+  <div class="container px-4 px-lg-5 h-100">
+    <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+      <div class="col-lg-8 align-self-end">
+        <h2 class="text-white font-weight-bold">📝 Déclaration de sinistre</h2>
+
+        <div class="form-container">
+          <form [formGroup]="sinistreForm" (ngSubmit)="onSubmit()">
+
+            <!-- Date du sinistre -->
+            <label>Date du sinistre</label>
+            <input type="date" formControlName="dateSinistre" />
+            <div class="error" *ngIf="sinistreForm.get('dateSinistre')?.invalid && sinistreForm.get('dateSinistre')?.touched">
+              La date est requise.
+            </div>
+
+            <!-- Heure du sinistre -->
+            <label>Heure du sinistre</label>
+            <input type="time" formControlName="heureSinistre" />
+            <div class="error" *ngIf="sinistreForm.get('heureSinistre')?.invalid && sinistreForm.get('heureSinistre')?.touched">
+              L'heure est requise.
+            </div>
+
+            <!-- Lieu -->
+            <label>Lieu</label>
+            <input type="text" formControlName="lieuSinistre" />
+            <div class="error" *ngIf="sinistreForm.get('lieuSinistre')?.invalid && sinistreForm.get('lieuSinistre')?.touched">
+              Le lieu est requis.
+            </div>
+
+            <!-- Dégâts -->
+            <label>Dégâts</label>
+            <input type="text" formControlName="degats" />
+            <div class="error" *ngIf="sinistreForm.get('degats')?.invalid && sinistreForm.get('degats')?.touched">
+              Les dégâts sont requis.
+            </div>
+
+            <!-- Type de sinistre -->
+            <label>Type de sinistre</label>
+            <select formControlName="typeIncident">
+              <option value="" disabled selected>-- Sélectionnez un type --</option>
+              <option *ngFor="let type of typesIncident" [value]="type">{{ type }}</option>
+            </select>
+            <div class="error" *ngIf="sinistreForm.get('typeIncident')?.invalid && sinistreForm.get('typeIncident')?.touched">
+              Le type de sinistre est requis.
+            </div>
+
+            <!-- Véhicule -->
+            <label>Véhicule</label>
+            <select formControlName="vehiculeId">
+              <option value="" disabled selected>-- Sélectionnez un véhicule --</option>
+              <option *ngFor="let v of vehicules" [value]="v.idVehicule">{{ v.immatriculation }}</option>
+            </select>
+            <div class="error" *ngIf="sinistreForm.get('vehiculeId')?.invalid && sinistreForm.get('vehiculeId')?.touched">
+              Le véhicule est requis.
+            </div>
+
+            <!-- Photos -->
+            <label>Photos</label>
+            <input type="file" (change)="onFileChange($event)" multiple />
+
+            <!-- Bouton de soumission -->
+            <button type="submit" [disabled]="sinistreForm.invalid">Déclarer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

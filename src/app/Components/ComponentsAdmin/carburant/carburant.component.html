@@ -1,0 +1,127 @@
+<div class="mb-3 text-center">
+  <input type="text" class="form-control w-50 mx-auto shadow-sm"
+    placeholder="Rechercher par immatriculation"
+    [(ngModel)]="searchImmatriculation">
+</div>
+
+<div *ngFor="let groupe of bonsGroupesFiltres" class="mb-4">
+  <!-- Carte par véhicule -->
+  <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+    
+    <!-- Header véhicule -->
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <div class="d-flex align-items-center gap-2">
+        <i class="bi bi-car-front-fill fs-5"></i>
+        <h5 class="mb-0">{{ groupe.immatriculation }}</h5>
+        <span
+          *ngIf="groupe.bons[0]?.vehicule?.idVehicule && predictionsCarburant[groupe.bons[0].vehicule.idVehicule]"
+          class="badge bg-warning text-dark">
+          {{ predictionsCarburant[groupe.bons[0].vehicule.idVehicule] }}
+        </span>
+      </div>
+      <span class="badge bg-light text-dark">{{ groupe.bons.length }} bon(s)</span>
+    </div>
+
+    <!-- Liste des bons -->
+    <div class="list-group list-group-flush">
+      <div *ngFor="let b of groupe.bons" class="list-group-item p-3">
+        
+        <!-- Ligne principale -->
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+          <div>
+            <h6 class="mb-1">
+              <i class="bi bi-calendar-event me-1"></i> {{ b.dateAchat | date:'shortDate' }}
+            </h6>
+            <small class="text-muted">
+              <i class="bi bi-person-circle"></i> {{ b.utilisateurNom }} | 
+              <i class="bi bi-fuel-pump"></i> {{ b.carburantNom }}
+            </small>
+          </div>
+
+          <!-- Badge état -->
+          <span [ngClass]="{
+              'badge bg-warning text-dark': b.etat === 'EN_ATTENTE',
+              'badge bg-success': b.etat === 'ACCEPTE',
+              'badge bg-danger': b.etat === 'REFUSE'
+            }">
+            {{ b.etat }}
+          </span>
+        </div>
+
+        <!-- Détails quantite & montant -->
+        <div class="mt-2 d-flex flex-wrap gap-3">
+          <div>
+            <strong>Quantité:</strong>
+            <span *ngIf="!b.editQuantite">{{ b.quantite }} L</span>
+            <input *ngIf="b.editQuantite" type="number" [(ngModel)]="b.quantite"
+              class="form-control form-control-sm text-center" style="width:90px;" />
+          </div>
+          <div><strong>Montant:</strong> {{ b.montant | number:'1.2-2' }} DT</div>
+        </div>
+
+        <!-- Boutons actions -->
+        <div class="mt-3 d-flex flex-wrap gap-2">
+          <button class="btn btn-outline-info btn-sm" (click)="verifierCarburant(b)">
+            <i class="bi bi-check2-circle"></i> Vérifier
+          </button>
+          <button *ngIf="b.editQuantite" class="btn btn-success btn-sm" (click)="mettreAJourQuantite(b)">
+            <i class="bi bi-save"></i> Enregistrer
+          </button>
+          <button *ngIf="!b.editQuantite" class="btn btn-success btn-sm" (click)="b.id && valider(b.id, 'ACCEPTE')">
+            <i class="bi bi-hand-thumbs-up"></i> Accepter
+          </button>
+          <button *ngIf="!b.editQuantite" class="btn btn-warning btn-sm" (click)="b.id && valider(b.id, 'REFUSE')">
+            <i class="bi bi-hand-thumbs-down"></i> Refuser
+          </button>
+          <button class="btn btn-outline-primary btn-sm" (click)="toggleMissions(b)">
+            <i class="bi bi-list-check"></i> Missions
+          </button>
+        </div>
+
+        <!-- Missions liées -->
+        <div *ngIf="bonsOuverts[b.id]" class="mt-3">
+          <div *ngIf="missionsParBon[b.id]?.length > 0; else aucuneMission">
+            <table class="table table-sm table-bordered text-center">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>Destination</th>
+                  <th>Date départ</th>
+                  <th>Date retour</th>
+                  <th>Distance (km)</th>
+                  <th>Carburant (L)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let mission of missionsParBon[b.id]">
+                  <td>{{ mission.id }}</td>
+                  <td>{{ mission.destination }}</td>
+                  <td>{{ mission.dateDepart | date:'shortDate' }}</td>
+                  <td>{{ mission.dateRetour | date:'shortDate' }}</td>
+                  <td>{{ mission.distanceEstimee }}</td>
+                  <td>{{ mission.carburantNecessaire | number:'1.2-2' }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- Message vérification carburant -->
+<div *ngIf="messagesParBon[b.id]" class="mt-2 text-center">
+  <span 
+    [ngClass]="{
+      'text-success': messagesParBon[b.id].type === 'success',
+      'text-warning': messagesParBon[b.id].type === 'warning',
+      'text-info': messagesParBon[b.id].type === 'info',
+      'text-danger': messagesParBon[b.id].type === 'error'
+    }">
+    {{ messagesParBon[b.id].texte }}
+  </span>
+</div>
+
+          </div>
+          <ng-template #aucuneMission>
+            <div class="text-muted text-center fst-italic">Aucune mission pour ce bon</div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

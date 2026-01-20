@@ -1,0 +1,29 @@
+.masthead {
+  background-color: #0d6efd;
+  color: white;
+  padding: 60px 0;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+input.ng-valid.ng-touched, select.ng-valid.ng-touched {
+  border-color: #198754;
+}
+
+.btn {
+  transition: 0.3s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.page-section {
+  padding: 40px 0;
+}

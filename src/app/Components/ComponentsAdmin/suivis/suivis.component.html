@@ -1,0 +1,133 @@
+<div class="container my-5">
+
+  <!-- Calendrier -->
+<!-- Calendrier -->
+<div class="card shadow-sm border-0 my-5">
+  <div class="card-header bg-info text-white fw-semibold d-flex justify-content-between align-items-center">
+    <button class="btn btn-sm btn-light" (click)="changeMonth(-1)">← Mois précédent</button>
+    <span>{{ currentMonthName | titlecase }} {{ currentYear }}</span>
+    <button class="btn btn-sm btn-light" (click)="changeMonth(1)">Mois suivant →</button>
+  </div>
+
+  <div class="card-body">
+    <!-- Entêtes des jours -->
+    <div class="row text-center fw-bold mb-2">
+      <div class="col" *ngFor="let day of ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam']">{{ day }}</div>
+    </div>
+
+    <!-- Semaines du calendrier -->
+    <div class="row g-2" *ngFor="let week of calendarWeeks">
+      <div class="col" *ngFor="let date of week">
+        <div class="card text-center p-2"
+             [ngClass]="{
+               'bg-primary text-white': isToday(date),
+               'bg-danger text-white': hasSuivi(date) && !isToday(date),
+               'bg-light text-dark': !hasSuivi(date) && !isToday(date),
+               'invisible': isInvalidDate(date)
+             }">
+          <div class="card-body p-1" *ngIf="!isInvalidDate(date)">
+            <h6 class="card-title mb-1">{{ date | date:'dd' }}</h6>
+
+            <!-- Liste des véhicules pour ce jour -->
+            <ul class="list-unstyled small mb-0" *ngIf="hasSuivi(date)">
+              <li *ngFor="let v of getVehiculesForDate(date)">🚗 {{ v }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Titre principal -->
+  <div class="text-center mb-5">
+    <h2 class="fw-bold text-primary">🚗 Suivi des Véhicules</h2>
+    <p class="text-muted">Visualisez les suivis récents et les alertes associées à vos véhicules.</p>
+  </div>
+
+  <!-- Loading / Erreur -->
+  <div *ngIf="loading" class="alert alert-info text-center shadow-sm">Chargement en cours...</div>
+  <div *ngIf="errorMessage" class="alert alert-danger text-center shadow-sm">{{ errorMessage }}</div>
+
+  <!-- Champ recherche -->
+  <div class="mb-4">
+    <input type="text" class="form-control shadow-sm" placeholder="🔎 Filtrer par immatriculation..." [(ngModel)]="filtreImmatriculation">
+  </div>
+
+  <!-- Tableau des alertes -->
+  <div class="card shadow-sm border-0 mb-5" *ngIf="alertesGroupees.length > 0">
+    <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
+      <span>🚨 Alertes par véhicule</span>
+      <button class="btn btn-sm btn-success" (click)="marquerToutesCommeResolues()">✔ Marquer Comme Lu </button>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0 text-center align-middle">
+        <thead class="table-light">
+          <tr>
+            <th><input type="checkbox" [checked]="selectAll" (change)="selectAll = $event.target.checked; toggleSelectAll()"></th>
+            <th>Véhicule</th>
+            <th>Messages d'alerte</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alerte of alertesGroupees" [ngClass]="{'table-success': alerte.resolue, 'table-warning': !alerte.resolue}">
+            <td><input type="checkbox" [checked]="alerte.selected" (change)="alerte.selected = $event.target.checked"></td>
+            <td class="fw-bold text-start">{{ alerte.immatriculation }}</td>
+            <td class="text-start">
+              <ul class="mb-0 ps-3">
+                <li *ngFor="let msg of alerte.messages" class="text-danger">⚠ {{ msg }}</li>
+              </ul>
+            </td>
+            <td>
+              <button class="btn btn-sm btn-success" *ngIf="!alerte.resolue"
+                      (click)="marquerToutesCommeResoluesPourVehicule(alerte)">
+                ✔ Marquer comme lu
+              </button>
+              <span *ngIf="alerte.resolue" class="text-success fw-bold fs-5">✔</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p *ngIf="alertesGroupees.length === 0" class="text-muted text-center py-3 mb-0">Aucune alerte trouvée pour ce filtre.</p>
+
+  <!-- Tableau des suivis -->
+ <!-- Tableau des suivis -->
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-primary text-white fw-semibold">📋 Suivis des véhicules</div>
+  <div class="card-body p-0">
+    <table class="table table-hover align-middle mb-0 text-center">
+      <thead class="table-light">
+        <tr>
+          <th>Immatriculation</th>
+          <th>Date du Mise En Circulation </th>
+          <th>Consommation moyenne</th>
+          <th>Kilométrage actuel</th>
+          <th>📅 Prochain suivi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let suivi of suivis">
+          <td><strong>{{ suivi.immatriculation }}</strong></td>
+          <td>{{ suivi.dateCircu | date:'short' }}</td>
+          <td>{{ suivi.consommationMoyenne}}</td>
+          <td>{{ suivi.kmActuel }} km</td>
+          <td>
+        <span [ngClass]="getSuiviClass(suivi.prochainSuivi)">
+          📅 {{ suivi.prochainSuivi | date:'dd/MM/yyyy' }}
+        </span>
+      </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+  <!-- Message si aucun suivi -->
+  <p *ngIf="!loading && suivis.length === 0" class="text-muted text-center mt-3">Aucun suivi trouvé.</p>
+
+</div>

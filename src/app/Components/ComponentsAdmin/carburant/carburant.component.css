@@ -1,0 +1,77 @@
+/* Ligne verticale */
+.timeline {
+  position: relative;
+  padding: 20px 0;
+  list-style: none;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #dee2e6;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+/* Éléments de la timeline */
+.timeline > li {
+  position: relative;
+  margin-bottom: 40px;
+  min-height: 50px;
+}
+
+/* Badge (icône carburant) */
+.timeline-badge {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin-left: -20px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  font-size: 18px;
+  z-index: 100;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* Carte des détails */
+.timeline-panel {
+  position: relative;
+  width: 45%;
+  padding: 15px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+}
+
+/* Position gauche/droite en alternance */
+.timeline > li:nth-child(odd) .timeline-panel {
+  float: left;
+  text-align: left;
+}
+
+.timeline > li:nth-child(even) .timeline-panel {
+  float: right;
+  text-align: left;
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 20px;
+  }
+  .timeline > li .timeline-panel {
+    width: calc(100% - 60px);
+    float: right !important;
+  }
+  .timeline-badge {
+    left: 20px;
+    margin-left: 0;
+  }
+}

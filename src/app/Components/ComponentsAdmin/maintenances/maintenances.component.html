@@ -1,0 +1,221 @@
+<div class="mb-3">
+  <h3 class="fw-bold">Gestion des Maintenances</h3>
+   <button class="btn btn-info text-white mb-2" (click)="voirCalendrierSuivi()">
+    📅 Voir le calendrier de suivi
+  </button>
+</div>
+
+
+<div class="container mt-4">
+  <app-suivi-vehicules (demandeMaintenance)="ouvrirFormulaireMaintenance($event)"></app-suivi-vehicules>
+
+  <app-maintenance #maintenanceComp></app-maintenance>
+
+  <!-- Message d'erreur -->
+  <p class="alert alert-danger" *ngIf="error">{{ error }}</p>
+
+  <!-- Message succès -->
+  <span *ngIf="message" class="text-success fw-bold">{{ message }}</span>
+
+  <!-- Bouton Ajouter Maintenance -->
+  <button class="btn btn-success mb-3 float-end" (click)="toggleAddForm()">
+    {{ showAddForm ? 'Annuler' : 'Ajouter une maintenance' }}
+  </button>
+  <div class="clearfix"></div>
+
+  <!-- Recherche par immatriculation -->
+  <div class="mb-3 mt-3">
+    <input type="text" class="form-control" placeholder="Rechercher par immatriculation..."
+      [(ngModel)]="searchImmatriculation" (input)="filterMaintenances()" />
+  </div>
+
+  <!-- Formulaire ajout / modification -->
+  <div *ngIf="showAddForm" class="card shadow-sm p-4 mb-4">
+    <h5 class="card-title mb-3">
+      {{ isEditMode ? 'Modifier Maintenance' : 'Nouvelle Maintenance' }}
+    </h5>
+
+    <form [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()">
+      <div class="row g-3">
+
+        <!-- Type de Technicien -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Type de Technicien</label>
+          <select [(ngModel)]="selectedType" [ngModelOptions]="{standalone: true}" (change)="filterTechniciensByType()"
+            class="form-select" [disabled]="maintenanceForm.get('statut')?.value === 'Terminée'">
+            <option value="">-- Sélectionner --</option>
+            <option value="INTERNE">INTERNE</option>
+            <option value="EXTERNE">EXTERNE</option>
+          </select>
+        </div>
+
+        <!-- Technicien -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Technicien</label>
+          <select formControlName="technicienId" class="form-select" required
+            [disabled]="maintenanceForm.get('statut')?.value === 'Terminée'">
+            <option [ngValue]="null" disabled>-- Sélectionner un technicien --</option>
+            <option *ngFor="let tech of filteredTechniciens" [value]="tech.idTechnicien">
+              {{ tech.nom }} {{ tech.prenom }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Type d’incident -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Type d’incident</label>
+          <select formControlName="typeIncident" class="form-select" required
+            [disabled]="maintenanceForm.get('statut')?.value === 'Terminée'">
+            <option [ngValue]="null" disabled>-- Sélectionner un type d’incident --</option>
+            <option *ngFor="let t of typeIncidents" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+
+        <!-- Véhicule -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Véhicule</label>
+          <select formControlName="vehiculeId" class="form-select" required
+            [disabled]="maintenanceForm.get('statut')?.value === 'Terminée'">
+            <option [ngValue]="null" disabled>-- Sélectionner un véhicule --</option>
+            <option *ngFor="let v of vehiculesDisponibles" [value]="v.idVehicule">
+              {{ v.immatriculation }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Observations -->
+        <div class="col-12">
+          <label class="form-label fw-semibold">Observations</label>
+          <textarea formControlName="observations" class="form-control" rows="3" placeholder="Saisir les observations"
+            [disabled]="maintenanceForm.get('statut')?.value === 'Terminée'">
+        </textarea>
+        </div>
+
+        <!-- FormArray Interventions -->
+        <div class="col-12" formArrayName="interventions">
+          <div *ngFor="let inter of interventions.controls; let i=index" [formGroupName]="i" class="row g-3 mb-2">
+
+            <!-- Type d’intervention -->
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Type d’intervention</label>
+              <select formControlName="typeIntervention" class="form-select" required>
+                <option [ngValue]="null" disabled>-- Sélectionner --</option>
+                <option *ngFor="let t of typeInterventions" [value]="t">{{ t }}</option>
+                <!-- <option value="AUTRE">Autre</option> -->
+              </select>
+
+              <div *ngIf="inter.get('typeIntervention')?.value === 'AUTRE'" class="mt-2">
+                <input type="text" class="form-control" placeholder="Précisez le type d’intervention"
+                  formControlName="autreTypeIntervention" />
+              </div>
+            </div>
+
+            <!-- Coût total -->
+            <div class="col-md-6">
+              <label class="form-label fw-semibold">Coût Total (€)</label>
+              <input type="number" formControlName="coutTotal" class="form-control" min="0" required />
+            </div>
+
+            <!-- Bouton Supprimer -->
+            <div class="col-12 text-end">
+              <button type="button" class="btn btn-danger btn-sm mt-2" (click)="removeIntervention(i)">
+                Supprimer
+              </button>
+            </div>
+          </div>
+
+          <!-- Ajouter Intervention -->
+          <button type="button" class="btn btn-success btn-sm mt-2" (click)="addIntervention()">
+            + Ajouter intervention
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Boutons Submit / Annuler -->
+      <div class="d-flex justify-content-end mt-4">
+        <button class="btn btn-primary" type="submit" [disabled]="maintenanceForm.invalid">
+          {{ isEditMode ? 'Modifier' : 'Ajouter' }}
+        </button>
+        <button class="btn btn-outline-secondary ms-2" type="button" (click)="toggleAddForm()">Annuler</button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- Tableau regroupé par statut -->
+  <div class="mt-4" *ngFor="let group of groupedMaintenances | keyvalue">
+    <h4 class="mb-3">
+      <span class="badge" [ngClass]="{
+        'bg-secondary text-white': group.key === 'Initialisée',
+        'bg-warning text-dark': group.key === 'Planifiée',
+        'bg-primary text-white': group.key === 'En cours',
+        'bg-success text-white': group.key === 'Terminée'
+      }">{{ group.key }}</span>
+    </h4>
+
+    <div class="table-responsive mb-4">
+      <table class="table table-striped table-bordered align-middle">
+        <thead class="table-primary text-center">
+          <tr>
+            <th>Numéro</th>
+            <th>Description</th>
+            <th>Type Maintenance</th>
+            <th>Type Intervention</th>
+            <th>Coût Total</th>
+            <th>Véhicule</th>
+            <th>Technicien</th>
+            <th>Statut</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let m of group.value">
+            <td>{{ m.numeroMaintenance }}</td>
+            <td>{{ m.observations }}</td>
+            <td>{{ m.typeIncident || 'Non spécifié' }}</td>
+            <td>{{ m.typeIntervention || 'Non spécifié' }}</td>
+            <td>{{ m.coutTotal | number:'1.2-2' }} €</td>
+            <td>{{ m.vehiculeImmatriculation || 'Non spécifié' }}</td>
+            <td>{{ m.technicienNom || 'Non spécifié' }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-secondary text-white': m.statut === 'Initialisée',
+                'bg-warning text-dark': m.statut === 'Planifiée',
+                'bg-primary text-white': m.statut === 'En cours',
+                'bg-success text-white': m.statut === 'Terminée'
+              }">{{ m.statut }}</span>
+            </td>
+            <td class="text-center">
+              <!-- Sélecteur Statut -->
+              <ng-container *ngIf="!m.showPlanificationDates">
+                <div class="d-flex align-items-center gap-1">
+                  <select class="form-select form-select-sm w-auto" [ngModel]="m.statutTemp"
+                    (ngModelChange)="onStatutChangeTemp(m, $event)" [disabled]="m.statut === 'Terminée'">
+                    <option *ngIf="m.statut === 'Initialisée'" value="Planifiée">Planifiée</option>
+                    <option *ngIf="m.statut === 'Planifiée'" value="En cours">Démarrer</option>
+                    <option *ngIf="m.statut === 'En cours'" value="Terminée">Terminée</option>
+                    <option *ngIf="m.statut === 'Terminée'" value="Terminée">Terminée</option>
+                  </select>
+                 
+                </div>
+              </ng-container>
+
+              <!-- Formulaire Planification -->
+              <div *ngIf="m.showPlanificationDates" class="d-flex gap-2 justify-content-center">
+                <input type="date" [(ngModel)]="m.tempDateDepart" class="form-control form-control-sm" />
+                <input type="date" [(ngModel)]="m.tempDateFin" class="form-control form-control-sm" />
+                <button class="btn btn-success btn-sm" (click)="sauvegarderPlanification(m)">✔️</button>
+                <button class="btn btn-danger btn-sm" (click)="m.showPlanificationDates=false">❌</button>
+              </div>
+
+            </td>
+          </tr>
+          <tr *ngIf="group.value.length === 0">
+            <td colspan="9" class="text-center text-muted">Aucune maintenance trouvée</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

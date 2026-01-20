@@ -1,0 +1,33 @@
+<header class="masthead">
+    <div class="container px-4 px-lg-5 h-100">
+        <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
+            <div class="col-lg-8 align-self-end">
+                <h1 class="text-white font-weight-bold">   <h2>Modifier mes informations</h2></h1>
+                <div class="form-container" *ngIf="user">
+  <form (ngSubmit)="saveChanges()" #form="ngForm">
+    <!-- Nom -->
+    <label for="nom">Nom</label>
+    <input id="nom" [(ngModel)]="user.nom" name="nom" type="text" required [readonly]="!editable" />
+
+    <!-- Prénom -->
+    <label for="prenom">Prénom</label>
+    <input id="prenom" [(ngModel)]="user.prenom" name="prenom" type="text" required [readonly]="!editable" />
+
+
+    <!-- Téléphone -->
+    <label for="telephone">Téléphone</label>
+    <input id="telephone" [(ngModel)]="user.telephone" name="telephone" type="text" [readonly]="!editable" />
+   
+
+    <!-- Boutons -->
+    <div class="button-group">
+      <button type="button" *ngIf="!editable" (click)="enableEdit()">✏️ Modifier</button>
+      <button type="submit" *ngIf="editable">💾 Enregistrer</button>
+    </div>
+  </form>
+</div>
+
+</div>
+</div>
+</div>
+</header>

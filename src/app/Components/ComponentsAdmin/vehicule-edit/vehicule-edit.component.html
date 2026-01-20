@@ -1,0 +1,37 @@
+<form [formGroup]="vehiculeForm" (ngSubmit)="onSubmit()">
+  <label>Immatriculation</label>
+  <input type="text" formControlName="immatriculation" />
+
+  <label>Numéro de châssis</label>
+  <input type="text" formControlName="numeroChassis" />
+
+  <label>Date de mise en circulation</label>
+  <input type="date" formControlName="dateCircu" />
+
+  <label>Date d'acquisition</label>
+  <input type="date" formControlName="date_acquisition" />
+
+  <label>Kilométrage actuel</label>
+  <input type="number" formControlName="kilometrage_actuel" />
+
+  <label>Année modèle</label>
+  <input type="number" formControlName="anneeModel" />
+
+  <label>Type de carburant</label>
+  <input type="text" formControlName="typeCarburant" />
+
+  <label>État</label>
+  <select formControlName="etat">
+    <option value="MAINTENANCE">En Maintenance</option>
+    <option value="DISPONIBLE">Disponible</option>
+    <option value="Reserve">Reserve</option>
+    <option value="EN_PANNE">En Panne</option>
+  </select>
+
+  <!-- <div *ngIf="vehicule?.photoUrl">
+    <label>Photo</label><br />
+    <img [src]="'http://localhost:8090' + vehicule.photoUrl" width="200" />
+  </div> -->
+
+  <button type="submit">{{ isEditMode ? 'Mettre à jour' : 'Ajouter' }}</button>
+</form>

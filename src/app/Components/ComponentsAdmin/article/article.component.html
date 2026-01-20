@@ -1,0 +1,106 @@
+<div class="container mt-4">
+  <h2 class="text-center text-primary mb-4">Catalogue des Articles</h2>
+
+  <!-- Message d'erreur global -->
+  <p class="alert alert-danger" *ngIf="error">{{ error }}</p>
+
+  <!-- Bouton Ajouter -->
+  <div class="mb-4 text-end">
+    <button class="btn btn-success" (click)="toggleAddForm()">
+      {{ showAddForm ? 'Annuler' : 'Ajouter un article' }}
+    </button>
+  </div>
+
+  <!-- Formulaire d'ajout -->
+  <div *ngIf="showAddForm" class="card shadow-sm mb-4 p-4">
+  <form [formGroup]="articleForm" (ngSubmit)="onAddSubmit()">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label class="form-label">Référence</label>
+        <input type="text" formControlName="reference" class="form-control" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Nom</label>
+        <input type="text" formControlName="nom" class="form-control" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Description</label>
+        <textarea formControlName="description" class="form-control"></textarea>
+      </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+      <div class="col-md-3">
+        <label class="form-label">Prix (€)</label>
+        <input type="number" formControlName="prix" class="form-control" />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Fournisseur</label>
+        <select formControlName="fournisseurId" class="form-select" required>
+  <option value="" disabled>Choisir un fournisseur</option>
+  <option *ngFor="let f of fournisseurs" [value]="f.idFournisseur">
+    {{ f.nomFournisseur }}
+  </option>
+</select>
+
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Image</label>
+        <input type="file" (change)="onFileSelected($event)" class="form-control" />
+        <img *ngIf="previewUrl" [src]="previewUrl" class="mt-2 rounded" style="max-width:150px;" />
+      </div>
+    </div>
+
+    <div class="mt-3 text-end">
+      <button type="submit" class="btn btn-success" [disabled]="articleForm.invalid">
+        Ajouter
+      </button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="toggleAddForm()">Annuler</button>
+    </div>
+  </form>
+</div>
+
+  <!-- Barre de recherche -->
+  <div class="mb-4">
+    <input type="text" class="form-control" placeholder="Rechercher par référence..." [(ngModel)]="searchReference"
+      (ngModelChange)="filterArticles()" />
+  </div>
+
+  <!-- Catalogue en cartes -->
+  <div class="row g-4">
+    <div *ngFor="let article of filteredArticles" class="col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100 shadow-sm">
+        <img *ngIf="article.imageUrl" [src]="article.imageUrl" class="card-img-top" alt="{{ article.nom }}">
+        <div *ngIf="!article.imageUrl" class="card-img-top bg-light d-flex align-items-center justify-content-center"
+          style="height:180px;">
+          <span class="text-muted">Pas d’image</span>
+        </div>
+
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title">{{ article.nom }} |{{ article.reference }}</h5>
+          <p class="card-text text-truncate">{{ article.description }} </p>
+          <p class="card-text fw-bold">{{ article.prix }} €</p>
+
+          <div class="btn-group">
+  <button class="btn btn-sm" 
+          [ngClass]="article.actif ? 'btn-warning' : 'btn-success'" 
+          (click)="toggleActif(article)">
+    <i [ngClass]="article.actif ? 'bi bi-slash-circle' : 'bi bi-check-circle'"></i>
+    {{ article.actif ? 'Désactiver' : 'Activer' }}
+  </button>
+
+  <!-- Bouton édition seulement si actif -->
+  <button *ngIf="article.actif" class="btn btn-warning btn-sm" (click)="editArticle(article)">
+    <i class="bi bi-pencil"></i>
+  </button>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="filteredArticles.length === 0" class="col-12 text-center text-muted">
+      Aucun article trouvé
+    </div>
+  </div>
+</div>

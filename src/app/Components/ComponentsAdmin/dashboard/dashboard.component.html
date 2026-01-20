@@ -1,0 +1,29 @@
+<!-- Content body -->
+<section class="content">
+  <h2>Bienvenue dans votre panneau d’administration</h2>
+  <p>Gérez ici votre parc automobile, les utilisateurs et plus encore.</p>
+
+
+  <!-- Features (cartes avec badge) -->
+  <div class="grid">
+    <a 
+      class="card position-relative" 
+      *ngFor="let f of features" 
+      [routerLink]="f.route" 
+      tabindex="0" 
+      role="button" 
+      [attr.aria-label]="f.title">
+      
+      <div class="icon">{{ f.icon }}</div>
+      <h3>{{ f.title }}</h3>
+      <p>{{ f.desc }}</p>
+
+      <!-- Badge dynamique -->
+      <span 
+        *ngIf="f.badge && f.badge > 0" 
+        class="badge bg-danger position-absolute top-0 start-100 translate-middle">
+        {{ f.badge }}
+      </span>
+    </a> 
+  </div>
+</section>

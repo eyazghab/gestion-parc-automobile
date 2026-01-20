@@ -1,0 +1,116 @@
+<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" routerLink="/accueil">Elit Parc Auto</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ms-auto my-2 my-lg-0">
+
+        <!-- Lien toujours visible -->
+        <li class="nav-item"><a class="nav-link" routerLink="/home">Accueil</a></li>
+
+        <!-- Liens pour USER -->
+        <ng-container *ngIf="user && user.role === 'USER'">
+          <li class="nav-item"><a class="nav-link" routerLink="/demande-mission">Demande Mission</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="declarationDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Déclaration
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="declarationDropdown">
+              <li><a class="dropdown-item" routerLink="/declaration-sinistre">Sinistres</a></li>
+              <li><a class="dropdown-item" routerLink="/declaration-bonCarburant">Bon Carburant</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item"><a class="nav-link" routerLink="/profil">Mon Profil</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="mesDemandesDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Mes Demandes
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="mesDemandesDropdown">
+              <li><a class="dropdown-item" routerLink="/MesMissions">Mes Missions</a></li>
+              <li><a class="dropdown-item" routerLink="/MesCarburants">Mes Bons Carburant</a></li>
+            </ul>
+          </li>
+        </ng-container>
+
+        <!-- Liens pour ADMIN -->
+        <ng-container *ngIf="user && user.role === 'ADMIN'">
+          <li class="nav-item"><a class="nav-link" routerLink="/vehicules">Véhicules</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/utilisateurs">Utilisateurs</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/maintenances">Maintenances</a></li>
+          <li class="nav-item"><a class="nav-link" routerLink="/carburants">Carburants</a></li>
+        </ng-container>
+
+        <!-- Utilisateur connecté -->
+        <ng-container *ngIf="user; else guestLinks">
+          <li class="nav-item">
+            <span class="nav-link">👋 Bienvenue, {{ user.prenom }} {{ user.nom }}</span>
+          </li>
+
+          <!-- 🔔 Notifications -->
+          <li class="nav-item dropdown me-3">
+            <a class="nav-link dropdown-toggle position-relative" href="#" id="notifDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              🔔
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                *ngIf="notificationsNonLues > 0">
+                {{ notificationsNonLues }}
+              </span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notifDropdown" style="width: 350px;">
+              <li *ngIf="notifications.length === 0" class="dropdown-item text-muted">Aucune notification</li>
+
+              <!-- Boucle sur les notifications -->
+              <li *ngFor="let notif of notifications">
+                <a class="dropdown-item" [ngClass]="{ 'fw-bold': !notif.lue }" (click)="ouvrirNotification(notif)">
+
+                  <div class="notif-date">{{ notif.dateNotif | date:'short' }}</div>
+                  <div class="d-flex align-items-start">
+                    <div class="notif-message flex-grow-1">
+                      {{ notif.message }}
+                      <span class="badge bg-info" *ngIf="notif.type">{{ notif.type }}</span>
+                    </div>
+                    <span *ngIf="!notif.lue" class="badge bg-primary ms-2">New</span>
+                  </div>
+
+                </a>
+              </li>
+
+
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li>
+                <button class="dropdown-item text-center" (click)="markAsReadAll()">
+                  Tout marquer comme lu
+                </button>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Bouton déconnexion -->
+          <li class="nav-item">
+            <button class="btn btn-outline-danger btn-sm ms-2" (click)="logout()">Déconnexion</button>
+          </li>
+        </ng-container>
+
+        <!-- Liens invités -->
+        <ng-template #guestLinks>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/connexion">👤 Connexion</a>
+          </li>
+        </ng-template>
+
+      </ul>
+    </div>
+  </div>
+</nav>

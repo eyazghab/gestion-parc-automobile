@@ -1,0 +1,178 @@
+<!-- Bouton Ajouter -->
+<button class="btn btn-success mb-3 float-end" (click)="showFormForAdd()">
+  {{ showForm ? 'Annuler' : 'Ajouter une commande' }}
+</button>
+
+<!-- Formulaire d'ajout / édition -->
+<div *ngIf="showForm" class="card p-3">
+  <form [formGroup]="commandeForm" (ngSubmit)="save()">
+
+    <!-- Fournisseur -->
+    <div formGroupName="fournisseur" class="mb-3">
+      <label class="form-label">Fournisseur</label>
+      <select class="form-select" formControlName="idFournisseur" (change)="onFournisseurChange()">
+        <option [ngValue]="null">-- Sélectionner --</option>
+        <option *ngFor="let f of fournisseurs" [ngValue]="f.idFournisseur">
+          {{ f.nomFournisseur }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Commentaire -->
+    <div class="mb-3">
+      <label class="form-label">Commentaire</label>
+      <textarea class="form-control" formControlName="commentaire"></textarea>
+    </div>
+
+    <!-- Lignes de commande -->
+    <h6>Lignes de commande</h6>
+    <div formArrayName="lignes">
+      <div *ngFor="let ligne of lignes.controls; let i = index" [formGroupName]="i"
+           class="row g-2 align-items-end mb-2">
+
+        <!-- Article -->
+        <div class="col-md-4">
+          <label class="form-label">Article</label>
+          <select class="form-select" formControlName="articleId" (change)="onArticleSelect(i)">
+            <option [ngValue]="null">-- Sélectionner --</option>
+            <option *ngFor="let a of articlesFournisseur" [ngValue]="a.idArticle">
+              {{ a.nom }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Quantité -->
+        <div class="col-md-2">
+          <label class="form-label">Quantité</label>
+          <input type="number" class="form-control" formControlName="quantite" (input)="onArticleSelect(i)">
+        </div>
+
+        <!-- Prix -->
+        <div class="col-md-2">
+          <label class="form-label">Prix unitaire</label>
+          <input type="number" class="form-control" formControlName="prixUnitaire" readonly>
+        </div>
+
+        <!-- Total -->
+        <div class="col-md-2">
+          <label class="form-label">Total</label>
+          <input type="number" class="form-control" formControlName="total" readonly>
+        </div>
+
+        <!-- Supprimer -->
+        <div class="col-md-2 text-center">
+          <button type="button" class="btn btn-danger" (click)="removeLigne(i)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ajouter une ligne -->
+    <button type="button" class="btn btn-secondary btn-sm mt-2" (click)="addLigne()">
+      <i class="bi bi-plus-circle"></i> Ajouter une ligne
+    </button>
+
+    <!-- Résumé des montants -->
+    <div class="mt-3">
+      <p><strong>Total HT:</strong> {{ getMontantHT() | number:'1.2-2' }} €</p>
+      <p><strong>TVA (19%):</strong> {{ getMontantTVA() | number:'1.2-2' }} €</p>
+      <p><strong>Total TTC:</strong> {{ getMontantTTC() | number:'1.2-2' }} €</p>
+    </div>
+
+    <!-- Boutons -->
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+      <button type="button" class="btn btn-secondary" (click)="cancelForm()">Annuler</button>
+    </div>
+  </form>
+</div>
+
+<!-- Liste des commandes -->
+<div *ngIf="!loading && commandes.length > 0" class="row g-4 mt-4">
+  <div *ngFor="let commande of commandes" class="col-12 col-md-6 col-lg-4 d-flex">
+    <div class="card shadow-sm flex-fill">
+      <div class="card-header bg-primary text-white">
+        <h5 class="card-title mb-0">Commande #{{ commande.numeroCommande }}</h5>
+      </div>
+      <div class="card-body">
+        <p><strong>Commentaire:</strong> {{ commande.commentaire }}</p>
+        <p><strong>Fournisseur:</strong> {{ commande.fournisseur?.nomFournisseur }}</p>
+
+        <h6>Lignes de commande</h6>
+        <div class="table-responsive">
+          <table class="table table-sm table-bordered text-center mb-2">
+            <thead class="table-light">
+              <tr>
+                <th>Article</th>
+                <th>Réf</th>
+                <th>Qté</th>
+                <th>Prix</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ligne of commande.lignes">
+                <td>{{ ligne.article?.nom }}</td>
+                <td>{{ ligne.article?.reference || ligne.reference }}</td>
+                <td>{{ ligne.quantite }}</td>
+                <td>{{ ligne.article?.prix || ligne.prixUnitaire | number:'1.2-2' }}</td>
+                <td>{{ (ligne.quantite || 0) * (ligne.article?.prix || ligne.prixUnitaire) | number:'1.2-2' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h6>Montants</h6>
+        <ul class="list-unstyled mb-2">
+          <li><strong>HT:</strong> {{ commande.montant_ht | number:'1.2-2' }}</li>
+          <li><strong>TVA:</strong> {{ commande.montant_tva | number:'1.2-2' }}</li>
+          <li><strong>TTC:</strong> {{ commande.montant_ttc | number:'1.2-2' }}</li>
+        </ul>
+        <p><strong>Statut:</strong> {{ commande.statut }}</p>
+      </div>
+
+<div class="card-footer d-flex flex-wrap gap-2">
+  <!-- PDF dispo toujours -->
+  <button class="btn btn-sm btn-success" (click)="telechargerPDF(commande)">
+    <i class="bi bi-file-earmark-pdf"></i> PDF
+  </button>
+
+  <!-- EN_ATTENTE -->
+  <button *ngIf="commande.statut === 'EN_ATTENTE'" class="btn btn-sm btn-danger" (click)="deleteCommande(commande)">
+    <i class="bi bi-trash"></i> Supprimer
+  </button>
+  <button *ngIf="commande.statut === 'EN_ATTENTE'" class="btn btn-sm btn-primary" (click)="passerEnCours(commande)">
+    <i class="bi bi-cart"></i> Commander
+  </button>
+  <!-- Ajouter Modifier pour EN_ATTENTE -->
+  <button *ngIf="commande.statut === 'EN_ATTENTE'" class="btn btn-sm btn-warning" (click)="edit(commande)">
+    <i class="bi bi-pencil"></i> Modifier
+  </button>
+
+  <!-- EN_COURS -->
+  <button *ngIf="commande.statut === 'EN_COURS'" class="btn btn-sm btn-primary" (click)="edit(commande)">
+    <i class="bi bi-pencil"></i> Modifier
+  </button>
+  <button *ngIf="commande.statut === 'EN_COURS'" class="btn btn-sm btn-success" (click)="livrerCommande(commande)">
+    <i class="bi bi-check-circle"></i> Valider
+  </button>
+  <button *ngIf="commande.statut === 'EN_COURS'" class="btn btn-sm btn-warning" (click)="annulerCommande(commande)">
+    <i class="bi bi-x-circle"></i> Annuler
+  </button>
+
+  <!-- VALIDEE -->
+  <button *ngIf="commande.statut === 'VALIDEE'" class="btn btn-sm btn-info" (click)="livrerCommande(commande)">
+    <i class="bi bi-truck"></i> Livrée
+  </button>
+
+  <!-- ANNULÉE ou REJETEE -->
+  <span *ngIf="commande.statut === 'ANNULEE' || commande.statut === 'REJETEE'" class="text-muted">
+    Aucune action disponible
+  </span>
+</div>
+
+
+    </div>
+  </div>
+</div>

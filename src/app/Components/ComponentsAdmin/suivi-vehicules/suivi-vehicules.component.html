@@ -1,0 +1,70 @@
+<div class="container mt-4" *ngIf="!loading">
+
+  <!-- Dashboard compteurs -->
+  <div class="row mb-4">
+    <div class="col" *ngFor="let etat of ['bon','panne','maintenance']">
+      <div class="card text-white text-center" [ngClass]="{
+             'bg-success': etat==='bon',
+             'bg-danger': etat === 'panne',         
+             'bg-warning': etat === 'maintenance'  
+
+           }" style="cursor:pointer" (click)="selectionnerEtat(etat)">
+        <div class="card-body">
+          <h5 class="card-title">{{ getTexteEtat(etat) }}</h5>
+          <p class="card-text fs-3">{{ countEtat(etat) }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info filtre actif -->
+  <h5 *ngIf="etatFiltre" class="mb-3">
+    Véhicules {{ getTexteEtat(etatFiltre) }}
+  </h5>
+
+  <!-- Tableau véhicules filtrés -->
+<table class="table table-striped" *ngIf="getSuivisDisponibles().length > 0">
+    <thead>
+      <tr>
+        <th>Immatriculation</th>
+        <th>Kilométrage</th>
+        <th>Nbr Accidents</th>
+        <th>Nbr Pannes</th>
+        <th>Kms depuis freins</th>
+        <th>Kms depuis vidange	</th>
+        <th>Vie batterie</th>
+        <th>État</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let v of suivisFiltres" [ngClass]="getClasseLigne(v)">
+        <td>{{ v.immatriculation }}</td>
+        <td>{{ v.kmActuel }}</td>
+        <td>{{ v.nombreAccidents }}</td>
+        <td>{{ v.nombrePannes }}</td>
+        <td>{{ v.kilometresDepuisFreins }}</td>
+        <td>{{ v.kilometresDepuisVidange }}</td>
+        <td>{{ v.dureeVieBatterie }}</td>
+        <td>{{ getEtatVehicule(v) }}</td>
+        <td>
+          <button *ngIf="getEtatSimple(v) === 'panne'" class="btn btn-danger btn-sm" (click)="ouvrirMaintenance(v)">
+            Déclarer Maintenance
+          </button>
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+<p *ngIf="suivisFiltres && suivisFiltres.length === 0">Aucun véhicule à afficher.</p>
+</div>
+
+<!-- Chargement -->
+<div *ngIf="loading" class="text-center mt-5">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Chargement...</span>
+  </div>
+</div>
+
+<!-- Erreur -->
+<div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>

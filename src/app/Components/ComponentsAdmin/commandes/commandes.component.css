@@ -1,0 +1,90 @@
+/* Container */
+.container {
+  max-width: 1200px;
+  padding-top: 20px;
+}
+
+/* Cartes commandes */
+.card-command {
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 20px;
+}
+
+.card-command:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.card-header-command {
+  background-color: #0d6efd;
+  color: #fff;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Badges statut */
+.badge {
+  padding: 0.35em 0.6em;
+  font-size: 0.85rem;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+
+.badge.EN_ATTENTE { background-color: #ffc107; color: #212529; }
+.badge.VALIDEE { background-color: #198754; color: #fff; }
+.badge.REJETEE { background-color: #dc3545; color: #fff; }
+.badge.LIVREE { background-color: #0d6efd; color: #fff; }
+
+.badge:hover {
+  transform: scale(1.05);
+}
+
+/* Table lignes commande */
+.table-responsive {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.table-bordered th, .table-bordered td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table-bordered tbody tr:hover { background-color: #f9f9f9; }
+
+/* Boutons actions */
+.btn {
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-sm { font-size: 0.85rem; padding: 4px 10px; }
+
+/* Couleurs boutons */
+.btn-primary { background-color: #0d6efd; border-color: #0d6efd; color: #fff; }
+.btn-primary:hover { background-color: #0b5ed7; }
+
+.btn-success { background-color: #198754; border-color: #198754; color: #fff; }
+.btn-success:hover { background-color: #157347; }
+
+.btn-warning { background-color: #ffc107; border-color: #ffc107; color: #212529; }
+.btn-warning:hover { background-color: #e0a800; }
+
+.btn-danger { background-color: #dc3545; border-color: #dc3545; color: #fff; }
+.btn-danger:hover { background-color: #c82333; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .d-flex { flex-direction: column; gap: 6px; }
+}
